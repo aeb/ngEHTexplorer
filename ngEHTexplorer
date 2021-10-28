@@ -1,0 +1,31 @@
+#!/bin/bash
+
+##########################################################################
+# Python distribution:
+PYEXEC=python3
+PIPEXEC=pip3
+##########################################################################
+
+##########################################################################
+# Check environment
+REQUIRED_PYPACKAGES="kivy kivymd matplotlib numpy"
+INSTALLED_PYPACKAGES=$($PIPEXEC list 2>/dev/null)
+for PYPACK in $REQUIRED_PYPACKAGES; do
+    if [ -z "$(echo $INSTALLED_PYPACKAGES | grep $PYPACK)" ]; then
+	echo "ERROR: Could not find needed python package \"$PYPACK\"."
+	echo "       To run ngEHTexplorer you need python3 and the following"
+	echo "       packages installed and reasonably up-to-date:"
+	echo ""
+	echo "           $REQUIRED_PYPACKAGES"
+	echo ""
+	echo "       Normally, you can install these with:"
+	echo "       \$ $PIPEXEC install --upgrade $REQUIRED_PYPACKAGES --user"
+	echo ""
+	exit 1
+    fi
+done
+
+##########################################################################
+# Start ngEHTexplorer
+cd src
+$PYEXEC ./main.py

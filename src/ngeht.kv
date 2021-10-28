@@ -1,0 +1,1418 @@
+#:import Factory kivy.factory.Factory
+#:import RiseInTransition kivy.uix.screenmanager.RiseInTransition
+#:import images_path kivymd.images_path
+#:import Clock kivy.clock.Clock
+#:import Snackbar kivymd.uix.snackbar.Snackbar
+# import get_color_from_hex kivy.utils
+
+# ScreenManager:
+#     id: sm_master
+
+#     Screen:
+#         name: "splash_screen"
+#         LogoProgressWheel:
+#             id: lpw
+            
+#         # LoadingScreen:
+#         #     id: 
+        
+#     Screen:
+#         name: "main_app_screen"
+#         MainAppScreen:
+#             id: main_app
+        
+
+# <LoadingScreen>:
+#     LogoProgressWheel:
+#         id: lpw
+        
+# <MainAppScreen@Screen>:
+Screen :
+    
+    LogoBackground:
+        id: logo_background
+        background_color: get_color_from_hex(app.theme_cls.colors[app.theme_cls.theme_style]["Background"])
+        logo_color: app.theme_cls.accent_dark #if (app.theme_cls.theme_style=="Dark") else app.theme_cls.accent_light
+        highlight_color: app.theme_cls.accent_light #if (app.theme_cls.theme_style=="Dark") else app.theme_cls.accent_dark
+        # logo_color: app.theme_cls.accent_dark if (app.theme_cls.theme_style=="Dark") else (1,0.77,0.17,1)
+        highlight_color: app.theme_cls.accent_light
+        
+        logo_size: 0.5*max(root.height,root.width)
+        logo_offset: (0.5*root.width,0.5*root.height)
+    
+    MDToolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+        # elevation: 10
+        title: "ngEHTexplorer"
+        md_bg_color: 0.14,0.14,0.14,1
+        specific_text_color: app.theme_cls.primary_color        
+        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+        # right_action_items: [["dots-vertical", lambda x: app.callback(x) ]]
+
+    
+    # SpecialOptionsMenu:
+    #     id: options_menu    
+        
+    BoxLayout:
+        size_hint: 1,1
+        canvas:
+            Color:
+                rgba: 1,1,1,1
+            Line:
+                points: [(0,self.pos[1]+self.height-toolbar.height-dp(1)),(self.width,self.pos[1]+self.height-toolbar.height-dp(1))]
+                width: dp(1)
+            
+        
+    MDNavigationLayout:
+        x: toolbar.height
+
+        ScreenManager:
+            id: screen_manager
+
+            Screen:
+                name: "quickstart_source"
+                Abbrv_DataSetSelectionPage:
+                    id: qs_data
+                    size_hint: 1,None
+                    height: root.height-toolbar.height - dp(15)
+                
+            Screen:
+                name: "quickstart_array"
+                Abbrv_InteractiveMapsPlot:
+                    id: qs_map
+                    size_hint: 1,None
+                    height: root.height-toolbar.height - dp(1)
+
+            Screen:
+                name: "quickstart_image"
+                Abbrv_InteractiveReconstructionPlot:
+                    id: qs_img
+                    size_hint: 1,None
+                    height: root.height-toolbar.height - dp(1)
+
+            
+            Screen:
+                name: "expert_target"
+                InteractiveTargetMap:
+                    id: ex_sky
+                    size_hint: 1,None
+                    height: root.height-toolbar.height - dp(1)
+
+            Screen:
+                name: "expert_source"
+                DataSetSelectionPage:
+                    id: ex_data
+                    size_hint: 1,None
+                    height: root.height-toolbar.height - dp(15)
+                
+            Screen:
+                name: "expert_array"
+                InteractiveMapsPlot:
+                    id: ex_map
+                    size_hint: 1,None
+                    height: root.height-toolbar.height - dp(1)
+
+            Screen:
+                name: "expert_baselines"
+                InteractiveBaselinesPlot:
+                    id: ex_uv
+                    size_hint: 1,None
+                    height: root.height-toolbar.height - dp(1)
+
+            Screen:
+                name: "expert_image"
+                InteractiveReconstructionPlot:
+                    id: ex_img
+                    size_hint: 1,None
+                    height: root.height-toolbar.height - dp(1)
+
+            Screen:
+                name: "expert_specs"
+                SpecificationsPage:
+                    id: ex_specs
+                    size_hint: 1,None
+                    height: root.height-toolbar.height - dp(1)
+                    
+                # MDLabel:
+                #     text: "Expert Specs"
+                #     halign: "center"
+
+            Screen:
+                name: "settings"
+                SettingsPage:
+                    id: settings
+                    size_hint: 1,None
+                    height: root.height-toolbar.height - dp(1)
+
+            Screen:
+                name: "about"
+                About:
+                    id: about
+                    size_hint: 1,None
+                    height: root.height-toolbar.height - dp(1)
+
+                    
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
+                id: content_drawer
+
+# Switch box that changes colors if desired
+<ActiveSwitchMDLabel>:
+    orientation: "horizontal"
+
+    BoxLayout:
+        id: left_buffer
+        size_hint: None,1
+        width: root.left_buffer
+    
+    MDLabel:
+        id: label
+        text: root.prefix_text+root.active_text(str(root.deactivated_text))+"/"+root.deactive_text(str(root.activated_text))+root.postfix_text
+        markup: True
+    MDSwitch:
+        id: switch
+        widget_style: "ios"    
+        pos_hint: {'center_x':0.5}
+        active: root.active
+        on_active:
+            label.text=root.prefix_text+( (root.deactive_text(str(root.deactivated_text))+"/"+root.active_text(str(root.activated_text)) if self.active else root.active_text(str(root.deactivated_text))+"/"+root.deactive_text(str(root.activated_text))) )+root.postfix_text
+            root.active = self.active
+        disabled: root.disabled
+        
+    BoxLayout:
+        id: buffer
+        size_hint: None,1
+        width: root.right_buffer
+
+<ItemDrawer>:
+    id: item
+    theme_text_color: "Custom"
+    on_release: self.parent.set_color_item(self)
+    text_color: self.theme_cls.text_color
+    
+    IconLeftWidget:
+        id: icon
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: root.text_color
+
+# <MenuItem>:
+#     id: item
+#     # color: self.theme_cls.text_color
+    
+#     IconLeftWidget:
+#         id: icon
+#         icon: root.icon
+#         # text_color: root.text_color
+    
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+    padding: "15dp"
+    spacing: "8dp"
+    
+    AnchorLayout:
+        anchor_x: "left"
+        anchor_y: "top"
+        size_hint: 1,None
+        height: avatar.height
+
+        BoxLayout:
+            Image:
+                id: avatar
+                size_hint: None,None
+                size: dp(56),dp(56)
+                source: "./images/ngeht_medallion_gold_on_white.png"
+            MDLabel:
+                size_hint: 1,None
+                height: avatar.height
+                text: "Next Generation\nEvent Horizon Telescope"
+                font_style: "H6"
+
+    # ActiveSwitchMDLabel:
+    #     size_hint: 1,None
+    #     height: dp(40)
+    #     deactivated_text: "Light"
+    #     activated_text: "Dark"
+    #     active: True
+    #     on_active:
+    #         app.set_theme(self.active)
+
+    ActiveSwitchMDLabel:
+        size_hint: 1,None
+        height: dp(50)
+        deactivated_text: "Quickstart"
+        activated_text: "Expert"
+        active: (app.app_mode=='expert')
+        on_active:
+            root.set_nav_drawer_list(self.active)
+            # root.children[0].switch_to_active_screen()
+            
+    QuickstartNavigationDrawer:
+        id: nav_drawer_list
+        
+
+<QuickstartNavigationDrawer>:
+    DrawerList:
+        id: md_list
+
+        ItemDrawer:
+            text: "Source"
+            icon: "creation"
+            text_color: app.theme_cls.primary_color
+            on_release:
+                root.parent.nav_drawer.set_state("close")
+                app.set_quickstart_transition_delay()
+                Clock.schedule_once(lambda x: app.transition_to_quickstart_source(root),app.transition_delay+0.25)
+                
+        ItemDrawer:
+            text: "Array"
+            icon: "earth"
+            on_release:
+                root.parent.nav_drawer.set_state("close")
+                app.set_quickstart_transition_delay()
+                Clock.schedule_once(lambda x: app.transition_to_quickstart_array(root),app.transition_delay+0.25)
+
+        ItemDrawer:
+            text: "Image"
+            icon: "image"
+            on_release:
+                root.parent.nav_drawer.set_state("close")
+                app.set_quickstart_transition_delay()
+                app.quickstart_snackbar_checks()
+                Clock.schedule_once(lambda x: app.transition_to_quickstart_image(root),app.transition_delay)
+
+        ItemDrawer:
+            text: "Settings"
+            icon: "cog"
+            on_release:
+                root.parent.nav_drawer.set_state("close")
+                app.set_quickstart_transition_delay()
+                Clock.schedule_once(lambda x: app.transition_to_settings(root),app.transition_delay)
+
+        ItemDrawer:
+            text: "About"
+            icon: "information"
+            on_release:
+                root.parent.nav_drawer.set_state("close")
+                app.set_quickstart_transition_delay()
+                Clock.schedule_once(lambda x: app.transition_to_about(root),app.transition_delay)
+
+                
+<ExpertNavigationDrawer>:
+    DrawerList:
+        id: md_list
+
+        ItemDrawer:
+            text: "Target"
+            icon: "target"
+            on_release:
+                app.set_expert_transition_delay()
+                root.parent.nav_drawer.set_state("close")
+                Clock.schedule_once(lambda x: app.transition_to_expert_target(root),app.transition_delay)
+                
+        ItemDrawer:
+            text: "Source"
+            icon: "creation"
+            text_color: app.theme_cls.primary_color
+            on_release:
+                app.set_expert_transition_delay()
+                root.parent.nav_drawer.set_state("close")
+                Clock.schedule_once(lambda x: app.transition_to_expert_source(root),app.transition_delay)
+
+        ItemDrawer:
+            text: "Array"
+            icon: "earth"
+            on_release:
+                app.set_expert_transition_delay()
+                root.parent.nav_drawer.set_state("close")
+                Clock.schedule_once(lambda x: app.transition_to_expert_array(root),app.transition_delay)
+
+        ItemDrawer:
+            text: "Baselines"
+            icon: "vector-polyline"
+            on_release:
+                root.parent.nav_drawer.set_state("close")
+                app.set_expert_transition_delay()
+                app.expert_snackbar_checks(procs="data")
+                Clock.schedule_once(lambda x: app.transition_to_expert_baselines(root),app.transition_delay)
+
+        ItemDrawer:
+            text: "Image"
+            icon: "image"
+            on_release:
+                root.parent.nav_drawer.set_state("close")
+                app.set_expert_transition_delay()
+                app.expert_snackbar_checks(procs="all")
+                Clock.schedule_once(lambda x: app.transition_to_expert_image(root),app.transition_delay)
+
+        ItemDrawer:
+            text: "Specifications"
+            icon: "clipboard-text"
+            on_release:
+                root.parent.nav_drawer.set_state("close")
+                app.set_expert_transition_delay()
+                app.expert_snackbar_checks(procs="data")
+                Clock.schedule_once(lambda x: app.transition_to_expert_specs(root),app.transition_delay)
+
+        ItemDrawer:
+            text: "Settings"
+            icon: "cog"
+            on_release:
+                root.parent.nav_drawer.set_state("close")
+                app.set_quickstart_transition_delay()
+                Clock.schedule_once(lambda x: app.transition_to_settings(root),app.transition_delay)
+
+        ItemDrawer:
+            text: "About"
+            icon: "information"
+            on_release:
+                root.parent.nav_drawer.set_state("close")
+                app.set_quickstart_transition_delay()
+                Clock.schedule_once(lambda x: app.transition_to_about(root),app.transition_delay)
+
+# <SpecialOptionsMenu@MDDropdownMenu> :
+#     ItemDrawer:
+#         text: "Settings"
+#         icon: "cog"
+#         on_release: print("Settings screen")
+        
+#     ItemDrawer:
+#         text: "About"
+#         icon: "information"
+#         on_release: print("About screen")
+
+#     ItemDrawer:
+#         text: "ngEHT"
+#         icon: "./images/ngeht_medallion_gold_on_white.png"
+#         on_release: print("Website!")
+
+<InteractiveTargetMap@FloatLayout>:
+    orientation: "vertical"
+    FloatLayout :
+        size_hint: 1.0,1.0
+        TargetSelectionMap :
+            id: plot
+            size: root.width,root.height
+    BoxLayout:
+        orientation: "vertical"
+        size_hint: None,None
+        size: dp(50),dp(100)
+        pos: root.width-dp(50),root.height-dp(100)
+        Button:
+            text: "\u002B"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.zoom_in()
+        Button:
+            text: "\u2212"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.zoom_out()
+
+
+<TargetSelectionSpinnerOptions>:
+    color: app.theme_cls.text_color
+    
+<TargetSelectionScreen>:
+    orientation: "vertical"
+    InteractiveTargetMap:
+
+<Abbrv_InteractiveReconstructionPlot>:
+    orientation: "vertical"
+    menu_id: sme
+    plot_id: plot
+    FloatLayout:
+        canvas:
+            Color:
+                rgb: 0,0,0
+            Rectangle:
+                size: root.width,root.height
+        size_hint: 1.0,1.0
+        Abbrv_MenuedReconstructionPlot:
+            id: plot
+            size: root.width,root.height
+            show_contours: False
+    BoxLayout:
+        orientation: "vertical"
+        size_hint: None,None
+        size: dp(50),dp(100)
+        pos: root.width-dp(50),root.height-dp(100)
+        Button:
+            text: "\u002B"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.irp.zoom_in()
+        Button:
+            text: "\u2212"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.irp.zoom_out()
+
+    Abbrv_StationMenu:
+        id: sme
+        rpp: plot
+        size_hint: 1.0,None
+        height: dp(50)+dp(25)
+        closed_height: dp(50)+dp(25)
+        
+
+<InteractiveReconstructionPlot>:
+    orientation: "vertical"
+    ddm_id: ddm
+    otm_id: otm
+    menu_id: sme
+    plot_id: plot
+    FloatLayout:
+        canvas:
+            Color:
+                rgb: 0,0,0
+            Rectangle:
+                size: root.width,root.height
+        size_hint: 1.0,1.0
+        MenuedReconstructionPlot:
+            id: plot
+            size: root.width,root.height
+    BoxLayout:
+        orientation: "vertical"
+        size_hint: None,None
+        size: dp(50),dp(100)
+        pos: root.width-dp(50),root.height-dp(100)
+        Button:
+            text: "\u002B"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.irp.zoom_in()
+        Button:
+            text: "\u2212"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.irp.zoom_out()
+
+    DiameterMenu:
+        id: ddm
+        plot: plot
+        size_hint: 1.0,None
+        opened_height: dp(100)+otm.height
+        height: ( self.opened_height if self.is_open else otm.height )
+        closed_height: otm.height
+        current_opened_height: self.opened_height
+            
+    ObsTimeMenu:
+        id: otm
+        plot: plot
+        size_hint: 1.0,None
+        opened_height: dp(100)+sme.height
+        height: ( self.opened_height if self.is_open else sme.height )
+        closed_height: sme.height
+        current_opened_height: self.opened_height
+
+    StationMenu:
+        id: sme
+        rpp: plot
+        ddm_id: ddm
+        size_hint: 1.0,None
+        height: dp(50)+dp(25)
+        closed_height: dp(50)+dp(25)
+        
+        
+<InteractiveBaselinesPlot>:
+    orientation: "vertical"
+    ddm_id: ddm
+    otm_id: otm
+    menu_id: sme
+    plot_id: plot
+    FloatLayout:
+        canvas:
+            Color:
+                rgb: get_color_from_hex(app.theme_cls.colors[app.theme_cls.theme_style]["Background"])
+            Rectangle:
+                size: root.width,root.height
+        size_hint: 1.0,1.0
+        MenuedBaselinePlot:
+            id: plot
+            size: root.width,root.height
+            ibp: ibp
+            InteractiveBaselinePlot_kivygraph:
+                id: ibp
+                spline_color: app.theme_cls.text_color
+    BoxLayout:
+        orientation: "vertical"
+        size_hint: None,None
+        size: dp(50),dp(100)
+        pos: root.width-dp(50),root.height-dp(100)
+        Button:
+            text: "\u002B"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.zoom_in()
+        Button:
+            text: "\u2212"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.zoom_out()
+
+    DiameterMenu:
+        id: ddm
+        plot: plot
+        size_hint: 1.0,None
+        opened_height: dp(100)+otm.height
+        height: ( self.opened_height if self.is_open else otm.height )
+        closed_height: otm.height
+        current_opened_height: self.opened_height
+            
+    ObsTimeMenu:
+        id: otm
+        plot: plot
+        size_hint: 1.0,None
+        opened_height: dp(100)+sme.height
+        height: ( self.opened_height if self.is_open else sme.height )
+        closed_height: sme.height
+        current_opened_height: self.opened_height
+        
+    StationMenu:
+        id: sme
+        rpp: plot
+        ddm_id: ddm
+        size_hint: 1.0,None
+        height: dp(50)+dp(25)
+        closed_height: dp(50)+dp(25)
+
+
+        
+<Abbrv_InteractiveMapsPlot>:
+    id: top_plot
+    orientation: "vertical"
+    menu_id: sme
+    plot_id: plot
+    FloatLayout :
+        size_hint: 1.0,1.0
+        MenuedBaselineMapPlot_kivygraph:
+            id: plot
+            size: root.width,root.height
+            ad_stn_box: ad_stn_box
+            menu_id: sme
+        
+    BoxLayout:
+        orientation: "vertical"
+        size_hint: None,None
+        size: dp(50),dp(100)
+        pos: root.width-dp(50),root.height-dp(100)
+        Button:
+            text: "\u002B"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.zoom_in()
+        Button:
+            text: "\u2212"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.zoom_out()
+
+    BoxLayout:
+        id: ad_stn_box
+        orientation: "vertical"
+        size_hint: None,None
+        size: dp(60),dp(120)
+        pos: 0,root.height-dp(120)
+
+    Abbrv_StationMenu:
+        id: sme
+        rpp: plot
+        size_hint: 1.0,None
+        height: dp(50)+dp(25)
+        closed_height: dp(50)+dp(25)
+        
+
+<InteractiveMapsPlot>:
+    id: top_plot
+    orientation: "vertical"
+    ddm_id: ddm
+    otm_id: otm
+    menu_id: sme
+    plot_id: plot
+    FloatLayout :
+        size_hint: 1.0,1.0
+        MenuedBaselineMapPlot_kivygraph:
+            id: plot
+            size: root.width,root.height
+            ad_stn_box: ad_stn_box
+            menu_id: sme
+
+    BoxLayout:
+        orientation: "vertical"
+        size_hint: None,None
+        size: dp(50),dp(100)
+        pos: root.width-dp(50),root.height-dp(100)
+        Button:
+            text: "\u002B"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.zoom_in()
+        Button:
+            text: "\u2212"
+            font_size: "36sp"
+            size_hint: None,None
+            size: "50dp","50dp"
+            color: 1,1,1,0.75
+            background_color: 0,0,0,0.25
+            on_press: plot.zoom_out()
+
+    BoxLayout:
+        id: ad_stn_box
+        orientation: "vertical"
+        size_hint: None,None
+        size: dp(60),dp(120)
+        pos: 0,root.height-dp(120)
+            
+    DiameterMenu:
+        id: ddm
+        plot: plot
+        size_hint: 1.0,None
+        opened_height: dp(100)+otm.height
+        height: ( self.opened_height if self.is_open else otm.height )
+        closed_height: otm.height
+        current_opened_height: self.opened_height
+            
+    ObsTimeMenu:
+        id: otm
+        plot: plot
+        size_hint: 1.0,None
+        opened_height: dp(100)+sme.height
+        height: ( self.opened_height if self.is_open else sme.height )
+        closed_height: sme.height
+        current_opened_height: self.opened_height
+
+    StationMenu:
+        id: sme
+        # rpp: top_plot
+        rpp: plot
+        ddm_id: ddm
+        size_hint: 1.0,None
+        height: dp(50)+dp(25)
+        closed_height: dp(50)+dp(25)
+        
+
+
+        
+<DiameterMenu>:
+    id: ddm
+    ddm_id: dds
+    expand_time: 0.5
+    fps: 60
+    tab_width: 0.333333*self.width
+    tab_pos_x: 0.666667*self.width
+    closed_height: 0
+    
+    canvas:
+        Color:
+            rgba: 0.77,0.55,0.17,0.25
+        Rectangle:
+            size: root.width, root.height-dp(25)
+    orientation: "vertical"
+    Button:
+        canvas:
+            Color:
+                rgba: 0.77,0.55,0.17,0.75
+            RoundedRectangle:
+                # radius: [(20,),(20,),(0,),(0,)]
+                radius: [(40,),(40,),(0,),(0,)]
+                size: root.tab_width,self.size[1]
+                pos: self.pos[0],root.height-dp(25)
+            Color:
+                rgba: 0.14,0.14,0.14,0.75
+            Triangle:
+                points: (0.5*root.tab_width+root.tab_pos_x-dp(10),root.height-dp(25)+0.2*self.height+0.6*self.height*root.is_open, 0.5*root.tab_width+root.tab_pos_x+dp(10),root.height-dp(25)+0.2*self.height+0.6*self.height*root.is_open, 0.5*root.tab_width+root.tab_pos_x,root.height-dp(25)+0.8*self.height-0.6*self.height*root.is_open)
+        size_hint: None,None
+        width: root.tab_width
+        height: dp(25)
+        pos_hint: {'right':(root.tab_width+root.tab_pos_x)/root.width}
+        background_color: 0,0,0,0
+        background_normal: ''
+        color: 0.14,0.14,0.14,1
+        on_press:
+            dds.toggle_state()
+            
+    DiameterSliders:
+        id: dds
+        plot: root.plot
+        top_menu: root
+        size_hint: 1,None
+        height: root.height-dp(25)-root.closed_height
+
+    BoxLayout:
+        size_hint: 1,None
+        height: root.closed_height
+
+        
+<ObsTimeMenu>:
+    id: otm
+    ots_id: ots
+    expand_time: 0.5
+    fps: 60
+    tab_width: 0.333333*self.width
+    tab_pos_x: 0.333333*self.width
+    closed_height: 0
+    
+    canvas:
+        Color:
+            rgba: 0.77,0.55,0.17,0.25
+        Rectangle:
+            size: root.width, root.height-dp(25)
+    orientation: "vertical"
+    Button:
+        canvas:
+            Color:
+                rgba: 0.77,0.55,0.17,0.75
+            RoundedRectangle:
+                # radius: [(20,),(20,),(0,),(0,)]
+                radius: [(40,),(40,),(0,),(0,)]
+                size: root.tab_width,self.size[1]
+                pos: self.pos[0],root.height-dp(25)
+            Color:
+                rgba: 0.14,0.14,0.14,0.75
+            Triangle:
+                points: (0.5*root.tab_width+root.tab_pos_x-dp(10),root.height-dp(25)+0.2*self.height+0.6*self.height*root.is_open, 0.5*root.tab_width+root.tab_pos_x+dp(10),root.height-dp(25)+0.2*self.height+0.6*self.height*root.is_open, 0.5*root.tab_width+root.tab_pos_x,root.height-dp(25)+0.8*self.height-0.6*self.height*root.is_open)
+        size_hint: None,None
+        width: root.tab_width
+        height: dp(25)
+        pos_hint: {'right':(root.tab_width+root.tab_pos_x)/root.width}
+        background_color: 0,0,0,0
+        background_normal: ''
+        color: 0.14,0.14,0.14,1
+        on_press:
+            ots.toggle_state()
+            
+    ObsTimeSliders:
+        id: ots
+        plot: root.plot
+        top_menu: root
+        size_hint: 1,None
+        height: root.height-dp(25)-root.closed_height
+
+    BoxLayout:
+        size_hint: 1,None
+        height: root.closed_height
+            
+    
+<Abbrv_StationMenu>:
+    id: sme
+    submenu_id: menu
+    expand_time: 0.5
+    fps: 60
+    opened_height: dp(50)+menu.minimum_height+dp(25)
+    tab_width: self.width
+    canvas:
+        Color:
+            rgba: 0.77,0.55,0.17,0.125
+        Rectangle:
+            size: root.width, root.height-dp(25)
+    orientation: "vertical"
+    Button:
+        canvas.after:
+            Color:
+                rgba: 0.77,0.55,0.17,0.75
+            RoundedRectangle:
+                radius: [(40,),(40,),(0,),(0,)]
+                size: root.tab_width,self.size[1]
+                pos: self.pos
+            Color:
+                rgba: 0.14,0.14,0.14,0.75
+            Triangle:
+                points: (0.5*root.tab_width-dp(10),self.pos[1]+0.2*self.height+0.6*self.height*root.is_open, 0.5*root.tab_width+dp(10),self.pos[1]+0.2*self.height+0.6*self.height*root.is_open, 0.5*root.tab_width,self.pos[1]+0.8*self.height-0.6*self.height*root.is_open)
+        size_hint: None,None
+        width: root.tab_width
+        pos_x: root.tab_pos_x
+        height: dp(25)
+        pos_y: self.height
+        background_color: 0,0,0,0
+        background_normal: ''
+        color: 0.14,0.14,0.14,1
+        on_press:
+            root.toggle_state()
+            
+    BoxLayout:
+        id: menu_topbox
+        size_hint: 1,None
+        height: min(dp(50),root.height)
+        Button:
+            text: "All"
+            font_size: sp(16)
+            color: 1,0.75,0.25,1
+            background_color: 0,0,0,0
+            size_hint: 0.5,None
+            size: 1,dp(50)
+            on_press:
+                menu.turn_all_stations_on()
+        Abbrv_SMESpinner:
+            sme_id: sme
+            text: sme.array_name
+            font_size: sp(18)
+            color: 1,1,1,1
+            background_color: 0,0,0,0
+            size_hint: 1,None
+            size: 1,dp(50)
+            height: dp(50)
+            pos: self.pos[0],menu_topbox.pos[1]+dp(0)
+            on_text:
+                self.on_selection(self.text)
+        Button:
+            text: "None"
+            font_size: sp(16)
+            color: 1,0.75,0.25,1
+            background_color: 0,0,0,0
+            size_hint: 0.5,None
+            size: 1,dp(50)
+            on_press:
+                menu.turn_all_stations_off()
+    ScrollView:
+        VariableToggleList:
+            id: menu
+            size_hint: 1, None
+            height: self.minimum_height
+            padding: 0.5*(root.width-min(self.nstations,int(root.width/self.button_size[0]))*self.button_size[0]),0
+            rpp: root.rpp
+
+
+<StationMenu>:
+    id: sme
+    submenu_id: menu
+    expand_time: 0.5
+    fps: 60
+    opened_height: dp(50)+menu.minimum_height+dp(25)
+    tab_width: 0.333333*self.width
+    canvas:
+        Color:
+            rgba: 0.77,0.55,0.17,0.125
+        Rectangle:
+            size: root.width, root.height-dp(25)
+    orientation: "vertical"
+    Button:
+        canvas.after:
+            Color:
+                rgba: 0.77,0.55,0.17,0.75
+            RoundedRectangle:
+                # radius: [(20,),(20,),(0,),(0,)]
+                radius: [(40,),(40,),(0,),(0,)]
+                size: root.tab_width,self.size[1]
+                pos: self.pos
+            Color:
+                rgba: 0.14,0.14,0.14,0.75
+            Triangle:
+                points: (0.5*root.tab_width-dp(10),self.pos[1]+0.2*self.height+0.6*self.height*root.is_open, 0.5*root.tab_width+dp(10),self.pos[1]+0.2*self.height+0.6*self.height*root.is_open, 0.5*root.tab_width,self.pos[1]+0.8*self.height-0.6*self.height*root.is_open)
+        size_hint: None,None
+        width: root.tab_width
+        pos_x: root.tab_pos_x
+        height: dp(25)
+        pos_y: self.height
+        background_color: 0,0,0,0
+        background_normal: ''
+        color: 0.14,0.14,0.14,1
+        on_press:
+            root.toggle_state()
+            
+    BoxLayout:
+        id: menu_topbox
+        size_hint: 1,None
+        height: min(dp(50),root.height)
+        Button:
+            text: "All"
+            font_size: sp(16)
+            color: 1,0.75,0.25,1
+            background_color: 0,0,0,0
+            size_hint: 0.5,None
+            size: 1,dp(50)
+            on_press:
+                menu.turn_all_stations_on()
+        SMESpinner:
+            sme_id: sme
+            ddm_id: sme.ddm_id
+            text: sme.array_name
+            font_size: sp(18)
+            color: 1,1,1,1
+            background_color: 0,0,0,0
+            size_hint: 1,None
+            size: 1,dp(50)
+            height: dp(50)
+            pos: self.pos[0],menu_topbox.pos[1]+dp(0)
+            on_text:
+                self.on_selection(self.text)
+        Button:
+            text: "None"
+            font_size: sp(16)
+            color: 1,0.75,0.25,1
+            background_color: 0,0,0,0
+            size_hint: 0.5,None
+            size: 1,dp(50)
+            on_press:
+                menu.turn_all_stations_off()
+    ScrollView:
+        VariableToggleList:
+            id: menu
+            size_hint: 1, None
+            height: self.minimum_height
+            padding: 0.5*(root.width-min(self.nstations,int(root.width/self.button_size[0]))*self.button_size[0]),0
+            rpp: root.rpp
+
+
+<SpecificationCategory>:
+    orientation: "vertical"
+    size_hint: 1,None
+    height: sp(20) + root.padding[1]+root.padding[3] + self.content_height
+    canvas:
+        Color:
+            rgba: (0,0,0,0.75) if (app.theme_cls.theme_style=='Dark') else (1,1,1,0.75)
+        RoundedRectangle:
+            size: root.size[0]-0.5*root.padding[0]-0.5*root.padding[2],root.size[1]-0.5*root.padding[1]-0.5*root.padding[3]
+            pos: root.pos[0]+0.5*root.padding[0],root.pos[1]+0.5*root.padding[3]
+            radius: [(0,0),(40,40),(0,0),(40,40)]
+    MDLabel:
+        text: root.title
+        font_style: "Button"
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.primary_color
+        valign: "top"
+        size_hint: 1,None
+        height: sp(20)
+
+        
+<SpecificationItem>:
+    orientation: "horizontal"
+    size_hint: 1, None
+    height: sp(20)
+    MDLabel:
+        size_hint: 1,1
+        text: "  "+root.name
+    MDLabel:
+        size_hint: 0.8,1
+        text: "  "+root.value 
+            
+<SpecificationsPage>:
+    # canvas:
+    #     Color:
+    #         rgba: 0,0,0,0.5
+    #     Rectangle:
+    #         size: root.width-dp(30),root.height-dp(30)
+    #         pos: dp(15),dp(15)
+
+    BoxLayout:
+        orientation: "vertical"
+
+        padding: [dp(30),dp(30),dp(30),dp(30)]
+        
+        # size_hint: None,None
+        # size: (root.width-dp(60), root.height-dp(60))
+        # pos_hint: (dp(30),dp(30))
+
+
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: 1,None
+            height: sp(26)+sp(48)+dp(20) #+sp(26)
+            padding: [dp(20),dp(0),dp(20),dp(20)]
+            canvas:
+                Color:
+                    # rgba: (0,0,0,0.5)
+                    rgba: (app.theme_cls.primary_color[0],app.theme_cls.primary_color[1],app.theme_cls.primary_color[2],0.5)
+                RoundedRectangle:
+                    size: self.size[0]-0.5*self.padding[0]-0.5*self.padding[2],self.size[1]-0.5*self.padding[1]-0.5*self.padding[3]
+                    pos: self.pos[0]+0.5*self.padding[0],self.pos[1]+0.5*self.padding[3]
+                    radius: [(0,0),(40,40),(0,0),(40,40)]
+
+            Image:
+                id: avatar        
+                size_hint: None,None
+                size: dp(56),dp(56)
+                # size: dp(75),dp(75)
+                source: "./images/ngeht_medallion_white_on_white.png"
+                background_color: (1,0,0,1)
+
+            BoxLayout:
+                orientation: "vertical"
+                MDLabel:
+                    id: cost_name
+                    text: "Estimated 10 yr cost:"
+                    font_style: "H6"
+                    halign: "center"                
+                    color: (1,1,1,1)
+                MDLabel:
+                    id: cost_value
+                    text: root.est_cost
+                    font_style: "H3"
+                    halign: "center"                
+                    color: (1,1,1,1)
+                # MDLabel:
+                #     id: cost_name
+                #     text: "Op. exp.: "+root.est_op
+                #     font_style: "H6"
+                #     halign: "center"                
+                #     color: (1,1,1,1)
+
+
+        
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            smooth_scroll_end: 10
+
+            # on_touch_down:
+            #     print("Foo")
+            # on_touch_move:
+            #     print("Bar")
+            # on_touch_up:
+            #     print("Baz")    
+            
+            # GridLayout:
+            #     cols: 1
+            BoxLayout:
+                size_hint: 1,None
+                height: specs_cb.height+specs_ap.height+specs_aperf.height+specs_stn.height+specs_dv.height+specs_uv.height+specs_vis.height
+                orientation: "vertical"
+
+                SpecificationCategory:
+                    id: specs_cb
+                    title: "Cost breakdown"
+                    content_height: sp(20)*3
+                    SpecificationItem:
+                        name: "Capital:"
+                        value: root.est_capex
+                    SpecificationItem:
+                        name: "New Operating:"
+                        value: root.est_opex
+                    SpecificationItem:
+                        name: "Data Management:"
+                        value: root.est_datex
+
+                SpecificationCategory:
+                    id: specs_aperf
+                    title: "Array performance"
+                    content_height: sp(20)*6
+                    SpecificationItem:
+                        name: "Baseline sensitivity"
+                        value: root.est_baseline_sensitivity
+                    SpecificationItem:
+                        name: "Limiting point source sensitivity"
+                        value: root.est_point_source_sensitivity
+                    SpecificationItem:
+                        name: "Nominal angular resolution"
+                        value: root.est_angular_resolution
+                    SpecificationItem:
+                        name: "Nominal field of view"
+                        value: root.est_field_of_view
+                    SpecificationItem:
+                        name: "Image dynamic range"
+                        value: root.est_image_dynamic_range
+                    SpecificationItem:
+                        name: "Snapshot dynamic range"
+                        value: root.est_snapshot_dynamic_range
+
+                SpecificationCategory:
+                    id: specs_ap
+                    title: "Array parameters"
+                    content_height: sp(20)*6
+                    SpecificationItem:
+                        name: "Antenna diameter:"
+                        value: str(root.ngeht_diameter)+" m"
+                    SpecificationItem:
+                        name: "Obs. start:"
+                        value: str(root.time_range[0])+" GST"
+                    SpecificationItem:
+                        name: "Obs. end:"
+                        value: str(root.time_range[1])+" GST"
+                    SpecificationItem:
+                        name: "S/N limit:"
+                        value: "%g"%(int(10*root.snr_cut+0.5)/10)
+                    SpecificationItem:
+                        name: "Source RA:"
+                        value: root.source_RA
+                    SpecificationItem:
+                        name: "Source Dec:"
+                        value: root.source_Dec
+                        
+                SpecificationCategory:
+                    id: specs_stn
+                    title: "Stations"
+                    content_height: sp(20)*2
+                    SpecificationItem:
+                        name: "Active:"
+                        value: str(root.stations)
+                    SpecificationItem:
+                        name: "New:"
+                        value: str(root.new_stations)
+                        
+                SpecificationCategory:
+                    id: specs_dv
+                    title: "Data Volume"
+                    content_height: sp(20)*4
+                    SpecificationItem:
+                        name: "Polarization:"
+                        value: "Dual"
+                    SpecificationItem:
+                        name: "Sampling:"
+                        value: "2 bit"
+                    SpecificationItem:
+                        name: "Bandwidth:"
+                        value: str(root.bandwidth)+" GHz"
+                    SpecificationItem:
+                        name: "Data rate:"
+                        value: "%.1g Tbps"%(root.data_rate)
+
+                SpecificationCategory:
+                    id: specs_uv
+                    title: "Baselines"
+                    content_height: sp(20)*2
+                    SpecificationItem:
+                        name: "Total:"
+                        value: str(root.number_of_baselines_total)
+                    SpecificationItem:
+                        name: "Constrained:"
+                        value: str(root.number_of_baselines_above_snrcut)
+                        
+                SpecificationCategory:
+                    id: specs_vis
+                    title: "Visibilities (10 min scans)"
+                    content_height: sp(20)*2
+                    SpecificationItem:
+                        name: "Total:"
+                        value: str(root.number_of_visibilities_total)
+                    SpecificationItem:
+                        name: "Constrained:"
+                        value: str(root.number_of_visibilities_above_snrcut)
+
+
+
+<CustomSnackbar>:
+
+    MDIconButton:
+        pos_hint: {'center_y': .5}
+        icon: root.icon
+        opposite_colors: True
+
+    MDLabel:
+        id: text_bar
+        size_hint_y: None
+        height: self.texture_size[1]
+        text: root.text
+        font_size: root.font_size
+        theme_text_color: 'Custom'
+        text_color: root.text_color
+        shorten: True
+        shorten_from: 'right'
+        pos_hint: {'center_y': .5}
+
+
+
+
+<SettingsPage@BoxLayout>:
+    orientation: "vertical"
+
+    BoxLayout:
+        size_hint: 1,None
+        height: dp(15)
+
+    SpecificationCategory:
+        title: "Theme"
+        content_height: dp(50)
+        ActiveSwitchMDLabel:
+            size_hint: 1,None
+            height: dp(50)
+            deactivated_text: "Light mode"
+            activated_text: "Dark mode"
+            active: (app.theme_cls.theme_style=='Dark')
+            on_active:
+                app.set_theme(self.active)
+
+    SpecificationCategory:
+        title: "World map background: "
+        content_height: dp(50)
+        ActiveSwitchMDLabel:
+            size_hint: 1,None
+            height: dp(50)
+            deactivated_text: "gray scale"
+            activated_text: "natural"
+            active: app.map_color
+            on_active:
+                app.set_map_color(self.active)
+
+    SpecificationCategory:
+        title: "Image log-scale contours (expert mode): "
+        content_height: dp(50)
+        ActiveSwitchMDLabel:
+            size_hint: 1,None
+            height: dp(50)
+            deactivated_text: "off"
+            activated_text: "on"
+            active: app.show_contours
+            on_active:
+                app.set_show_contours(self.active)
+            disabled: (app.app_mode=='quickstart')
+
+
+    BoxLayout:
+        size_hint: None,None
+        width: root.width-2*dp(10)
+        height: dp(50)
+        padding: [dp(10),dp(0),dp(10),dp(0)]
+        
+        MDRaisedButton:
+            text: "Restore defaults"
+            size_hint: None,None
+            width: root.width-2*dp(10)
+            height: dp(50)
+            on_release:
+                app.restore_default_settings()
+            
+    # SpecificationCategory:
+    #     title: "Negative image contours (expert mode): "
+    #     content_height: dp(50)
+    #     ActiveSwitchMDLabel:
+    #         size_hint: 1,None
+    #         height: dp(50)
+    #         deactivated_text: "off"
+    #         activated_text: "on"
+    #         active: True
+    #         on_active:
+    #             print("FOO")
+    #             #app.set_map_color(self.active)
+                
+    # Buffer to push switches toward top
+    BoxLayout:
+
+<About@BoxLayout>:
+    orientation: "vertical"
+
+    padding: [dp(30),dp(30),dp(30),dp(30)]
+
+    BoxLayout:
+        orientation: "horizontal"
+        size_hint: 1,None
+        height: sp(26)+sp(48)+dp(20)
+        padding: [dp(20),dp(0),dp(20),dp(20)]
+        canvas:
+            Color:
+                # rgba: (0,0,0,0.5)
+                rgba: (app.theme_cls.primary_color[0],app.theme_cls.primary_color[1],app.theme_cls.primary_color[2],0.5)
+            RoundedRectangle:
+                size: self.size[0]-0.5*self.padding[0]-0.5*self.padding[2],self.size[1]-0.5*self.padding[1]-0.5*self.padding[3]
+                pos: self.pos[0]+0.5*self.padding[0],self.pos[1]+0.5*self.padding[3]
+                radius: [(0,0),(40,40),(0,0),(40,40)]
+
+        # Image:
+        #     id: avatar        
+        #     size_hint: None,None
+        #     size: dp(56),dp(56)
+        #     source: "./images/ngeht_medallion_white_on_white.png"
+        #     background_color: (1,0,0,1)
+
+        BoxLayout:
+            orientation: "vertical"
+            MDLabel:
+                text: "ngEHTexplorer \nVersion "+app.version()
+                font_style: "H6"
+                halign: "center"                
+                color: (1,1,1,1)
+
+    
+    BoxLayout:
+        size_hint: 1,None
+        height: dp(15)
+
+    ScrollView:
+        BoxLayout:
+            size_hint: 1,None
+            height: ngeht_about.height+imaging_about.height+credits_about.height
+
+            orientation: "vertical"
+            
+            SpecificationCategory:
+                id: ngeht_about
+                title: "Next Generation EHT"
+                content_height: ngeht_about_text.texture_size[1]+ngeht_btn_array.height
+                MDLabel:
+                    id: ngeht_about_text
+                    font_style: "Caption"
+                    valign: "top"
+                    text: "The ngEHT is a proposed array of tens of individual stations placed about the globe that combined promise to produce the highest resolution view of universe in history."
+
+                BoxLayout:
+                    id: ngeht_btn_array
+                    size_hint: 1,None
+                    height: dp(100)
+
+                    ImageButton:
+                        id: ngeht_btn
+                        source: "./images/ngeht_project_white.png" if (app.theme_cls.theme_style=='Dark') else "./images/ngeht_project_black.png"
+                        on_release:
+                            app.website_link()
+
+                    ImageButton:
+                        id: ngeht_sci_btn
+                        source: "./images/ngeht_science.png"
+                        on_release:
+                            app.website_link("science")
+
+                    ImageButton:
+                        id: ngeht_tech_btn
+                        source: "./images/ngeht_tech.png"
+                        on_release:
+                            app.website_link(page="technology")
+
+            SpecificationCategory:
+                id: imaging_about
+                title: "Quick Imaging Algorithm"
+                content_height: imaging_about_text.texture_size[1]+dp(10)
+                MDLabel:
+                    id: imaging_about_text
+                    font_style: "Caption"
+                    valign: "top"
+                    text: "Image reconstruction is a process that attempts to fill in gaps in the observations with well-motivated assumptions about missing data.  In ngEHTexplorer we do this via cubic interpolation of the complex visibilities.  In practice, more powerful, but much more computationally intensive, methods exist.  Hence, these images are in many ways pessimistic forcasts of the imaging power of the ngEHT!"
+
+            SpecificationCategory:
+                id: credits_about
+                title: "Credits"
+                content_height: credits_about_text.texture_size[1]+dp(10)
+                MDLabel:
+                    id: credits_about_text
+                    font_style: "Caption"
+                    valign: "top"
+                    text: "Many people have contributed to ngEHTexplorer!  The app was developed using the Kivy and Kivymd python packages, and uses the NumPy and Matplotlib libraries.  ngEHTexplorer was written by Avery Broderick, Ariel Broderick, and Andrew Broderick.  Input data were provided by NASA, Andrew Chael, Christian Fromm, Paul Tiede, Lindy Blackburn, Alex Raymond.  Early testing was performed by and useful feedback obtained from Michael Johnson, Dominic Pesce, Roman Gold, and Paul Tiede.  The development of ngEHTexplorer is supported in part by the Perimeter Institute for Theoretical Physics and the University of Waterloo."
+
+            BoxLayout:
