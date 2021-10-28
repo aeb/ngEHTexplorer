@@ -112,7 +112,7 @@ class InteractiveBaselinePlot_kivygraph(ThemableBehavior,FloatLayout) :
                     inscan = (self.ddict['t']==tscan)
                     s1_scan = self.ddict['s1'][inscan]
                     s2_scan = self.ddict['s2'][inscan]
-                    snr_scan = np.array([ self.ddict['V'][inscan][j]/( self.ddict['err'][inscan][j] * diameter_correction_factor[s1_scan[j]] * diameter_correction_factor[s2_scan[j]] ) for j in range(len(s1_scan)) ])
+                    snr_scan = np.array([ np.abs(self.ddict['V'][inscan][j])/( self.ddict['err'][inscan][j].real * diameter_correction_factor[s1_scan[j]] * diameter_correction_factor[s2_scan[j]] ) for j in range(len(s1_scan)) ])
                     detection_station_list = []
                     for ss in np.unique(np.append(s1_scan,s2_scan)) :
                         snr_scan_ss = np.append(snr_scan[s1_scan==ss],snr_scan[s2_scan==ss])

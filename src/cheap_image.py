@@ -353,7 +353,7 @@ class InteractiveImageReconstructionPlot(InteractivePlotWidget) :
                 inscan = (ddnew['t']==tscan)
                 s1_scan = ddnew['s1'][inscan]
                 s2_scan = ddnew['s2'][inscan]
-                snr_scan = np.array([ ddnew['V'][inscan][j]/( ddnew['err'][inscan][j] * diameter_correction_factor[s1_scan[j]] * diameter_correction_factor[s2_scan[j]] ) for j in range(len(s1_scan)) ])
+                snr_scan = np.array([ np.abs(ddnew['V'][inscan][j])/( ddnew['err'][inscan][j].real * diameter_correction_factor[s1_scan[j]] * diameter_correction_factor[s2_scan[j]] ) for j in range(len(s1_scan)) ])
                 detection_station_list = []
                 for ss in np.unique(np.append(s1_scan,s2_scan)) :
                     snr_scan_ss = np.append(snr_scan[s1_scan==ss],snr_scan[s2_scan==ss])

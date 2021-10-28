@@ -2640,7 +2640,7 @@ class SpecificationsPage(BoxLayout) :
                 inscan = (ddtmp2['t']==tscan)
                 s1_scan = ddtmp2['s1'][inscan]
                 s2_scan = ddtmp2['s2'][inscan]
-                snr_scan = np.array([ ddtmp2['V'][inscan][j]/( ddtmp2['err'][inscan][j] * diameter_correction_factor[s1_scan[j]] * diameter_correction_factor[s2_scan[j]] ) for j in range(len(s1_scan)) ])
+                snr_scan = np.array([ np.abs(ddtmp2['V'][inscan][j])/( ddtmp2['err'][inscan][j].real * diameter_correction_factor[s1_scan[j]] * diameter_correction_factor[s2_scan[j]] ) for j in range(len(s1_scan)) ])
                 detection_station_list = []
                 for ss in np.unique(np.append(s1_scan,s2_scan)) :
                     snr_scan_ss = np.append(snr_scan[s1_scan==ss],snr_scan[s2_scan==ss])
@@ -2693,6 +2693,12 @@ class SpecificationsPage(BoxLayout) :
         # Image dynamic range
         x,y,I = img.reconstruct_image(_datadict,_statdict,snr_cut=_snr_cut,ngeht_diameter=_ngeht_diameter)
         image_dynamic_range = img.estimate_dynamic_range(x,y,I)
+        if (not I is None) :
+            image_dynamic_range = img.estimate_dynamic_range(x,y,I)
+            self.est_image_dynamic_range = "%g"%(self.sig_fig(image_dynamic_range,1))
+        else :
+            image_dynamic_range = np.nan
+            self.est_image_dynamic_range = "N/A"
         # Snapshot dynamic range
         tscans = np.unique(ddtmp['t'])
         Nscans = []
@@ -2714,9 +2720,16 @@ class SpecificationsPage(BoxLayout) :
         Nscans = Nscans[Nscans==Nscans_max]
         tscan_max = tscans[np.argmax(Iscans)]
 
-        x,y,I = img.reconstruct_image(_datadict,_statdict,time_range=[tscan_max-0.03,tscan_max+0.03],snr_cut=_snr_cut,ngeht_diameter=_ngeht_diameter)
-        snapshot_dynamic_range = img.estimate_dynamic_range(x,y,I)
-
+        if (np.max(Iscans)<0.1) :
+            x,y,I = None,None,None
+        else :
+            x,y,I = img.reconstruct_image(_datadict,_statdict,time_range=[tscan_max-0.03,tscan_max+0.03],snr_cut=_snr_cut,ngeht_diameter=_ngeht_diameter)
+        if (not I is None) :
+            snapshot_dynamic_range = img.estimate_dynamic_range(x,y,I)
+            self.est_snapshot_dynamic_range = "%g"%(self.sig_fig(snapshot_dynamic_range,1))
+        else :
+            snapshot_dynamic_range = np.nan
+            self.est_snapshot_dynamic_range = "N/A"
 
         # print("image dynamic range:",image_dynamic_range,int(np.log10(image_dynamic_range)))
         # print("snapshot dynamic range:",snapshot_dynamic_range)
@@ -2724,8 +2737,8 @@ class SpecificationsPage(BoxLayout) :
         # self.est_image_dynamic_range = "%g"%(int(image_dynamic_range/10**(int(np.log10(image_dynamic_range))))*10**(int(np.log10(image_dynamic_range))))
         # self.est_snapshot_dynamic_range = "%g"%(int(snapshot_dynamic_range/10**(int(np.log10(snapshot_dynamic_range))))*10**(int(np.log10(snapshot_dynamic_range))))
 
-        self.est_image_dynamic_range = "%g"%(self.sig_fig(image_dynamic_range,1))
-        self.est_snapshot_dynamic_range = "%g"%(self.sig_fig(snapshot_dynamic_range,1))
+        #self.est_image_dynamic_range = "%g"%(self.sig_fig(image_dynamic_range,1))
+        #self.est_snapshot_dynamic_range = "%g"%(self.sig_fig(snapshot_dynamic_range,1))
         
     def hr_to_str(self,RA) :
         hh = int(RA)
