@@ -16,9 +16,9 @@ and combinations thereof.
 To run ngEHTexplorer:
 1. Clone the ngEHTexplorer github repository:
 > $ git clone https://github.com/aeb/ngEHTexplorer.git
-2. Descend into the ngEHTexplorer directory
+2. Descend into the ngEHTexplorer directory:
 > $ cd ngEHTexplorer
-3. Run the executable
+3. Run the executable:
 > $ ./ngEHTexplorer
 
 You may need to edit the top of ngEHTexplorer to set the executables for your python3 and pip3 installations.
