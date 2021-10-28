@@ -20,6 +20,7 @@ To run ngEHTexplorer:
 > $ cd ngEHTexplorer
 3. Run the executable
 > $ ./ngEHTexplorer
+
 You may need to edit the top of ngEHTexplorer to set the executables for your python3 and pip3 installations.
 
 
