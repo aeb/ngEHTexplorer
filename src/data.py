@@ -81,14 +81,14 @@ def nearest_neighbor(X,xp,yp) :
 
 #########
 # To generate data from a station dictionary and image
-def generate_data(freq,ra,dec,imgx,imgy,imgI,statdict,integration_time=None,scan_time=600,min_elev=15,bandwidth=8.0,day=80) :
+def generate_data(freq,ra,dec,imgx,imgy,imgI,statdict,integration_time=None,scan_time=1200,min_elev=15,bandwidth=8.0,day=80) :
 
     #print("generate_data frequence is:",freq)
     
     if isinstance(freq,list) :
-        return generate_data_multi_frequency(freq,ra,dec,imgx,imgy,imgI,statdict,integration_time=None,scan_time=600,min_elev=15,bandwidth=8.0,day=80)
+        return generate_data_multi_frequency(freq,ra,dec,imgx,imgy,imgI,statdict,integration_time=integration_time,scan_time=scan_time,min_elev=min_elev,bandwidth=8.0,day=80)
     else :
-        return generate_data_single_frequency(freq,ra,dec,imgx,imgy,imgI,statdict,integration_time=None,scan_time=600,min_elev=15,bandwidth=8.0,day=80)
+        return generate_data_single_frequency(freq,ra,dec,imgx,imgy,imgI,statdict,integration_time=integration_time,scan_time=scan_timie,min_elev=min_elev,bandwidth=8.0,day=80)
 
 
 #########
