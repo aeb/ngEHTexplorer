@@ -100,3 +100,5 @@ Specifications, including array performance metrics are included on the "Specifi
 </p>
 
 
+Finally, various settings can be found on the "Settings" screen and information about the ngEHT and the development team can be found on the "About" screen.  Happy exploring!
+
