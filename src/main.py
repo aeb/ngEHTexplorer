@@ -1915,11 +1915,11 @@ class Abbrv_DataSetSelectionPage(BoxLayout) :
                            path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_RIAF_345.png")),
                            path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_RIAF_480.png")),
                            path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_RIAF_690.png"))],
-                          [path.abspath(path.join(path.dirname(__file__),"ngeht_Avery_hamr_SgrA_2048_86GHz_3087.npy")),
-                           path.abspath(path.join(path.dirname(__file__),"ngeht_Avery_hamr_SgrA_2048_230GHz_3087.npy")),
-                           path.abspath(path.join(path.dirname(__file__),"ngeht_Avery_hamr_SgrA_2048_345GHz_3087.npy")),
-                           path.abspath(path.join(path.dirname(__file__),"ngeht_Avery_hamr_SgrA_2048_480GHz_3087.npy")),
-                           path.abspath(path.join(path.dirname(__file__),"ngeht_Avery_hamr_SgrA_2048_690GHz_3087.npy"))],
+                          [path.abspath(path.join(path.dirname(__file__),"source_images/ngeht_Avery_hamr_SgrA_2048_86GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/ngeht_Avery_hamr_SgrA_2048_230GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/ngeht_Avery_hamr_SgrA_2048_345GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/ngeht_Avery_hamr_SgrA_2048_480GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/ngeht_Avery_hamr_SgrA_2048_690GHz_3087.npy"))],
                           "Simulated accretion flow at the Galactic center! (Credit: K. Chatterjee)",
                           False)
         # Sgr A

@@ -88,7 +88,7 @@ def generate_data(freq,ra,dec,imgx,imgy,imgI,statdict,integration_time=None,scan
     if isinstance(freq,list) :
         return generate_data_multi_frequency(freq,ra,dec,imgx,imgy,imgI,statdict,integration_time=integration_time,scan_time=scan_time,min_elev=min_elev,bandwidth=8.0,day=80)
     else :
-        return generate_data_single_frequency(freq,ra,dec,imgx,imgy,imgI,statdict,integration_time=integration_time,scan_time=scan_timie,min_elev=min_elev,bandwidth=8.0,day=80)
+        return generate_data_single_frequency(freq,ra,dec,imgx,imgy,imgI,statdict,integration_time=integration_time,scan_time=scan_time,min_elev=min_elev,bandwidth=8.0,day=80)
 
 
 #########
