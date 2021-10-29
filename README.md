@@ -1,14 +1,14 @@
 # ngEHTexplorer
 An interactive tool with which to explore the possible imaging performance of candidate ngEHT architectures.
 
-- [Summary](#Welcome!)
+- [Summary](#Summary-Description)
 - [Getting started](#Getting-Started)
 - [Feature Tour](#Feature-Tour)
 
 
 
 
-## Welcome!
+## Summary Description
 ngEHTexplorer is an interactive "app" that enables you to explore the impact of different ngEHT architecture choices on image reconstructions.  It is possible to investigate:
 - performance of different arrays (incl. add/remove stations)
 - imaging at multiple frequecies (incl. simultaneous multi-freq.)
