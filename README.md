@@ -50,10 +50,17 @@ The navigation drawer (circled above) is the primary way to move through the var
    <img src="docs/quickstart_navigation_drawer_qsex.png" alt="quickstart navigation drawer" width="256" class="center"/>  &emsp; <img src="docs/expert_navigation_drawer.png" alt="expert navigation drawer" width="256" class="center"/>
 </p>
 
-From thet navigation drawer you can select a variety of screens.  We begin with the Target screen, which permits selecting the sky position of interest.
+From thet navigation drawer you can select a variety of screens.  We begin with the Target screen, which permits selecting the sky position of interest.  Specific sources are listed in the menu in the lower-right (currently "Sgr A*"), included "--Select--" which permits the selection of arbitrary positions.  The map is in celestial coordinates.
 
 <p align="center">
    <img src="docs/expert_navigation_drawer_tg.png" alt="expert navigation drawer" width="256" class="center"/>  &emsp; <img src="docs/expert_target_selection.png" alt="expert target selection" width="256" class="center"/>
 </p>
 
+We now turn to the Source screen, which permits selecting the source image.  Options include the source itself (dragging left/right on teh image), the 
+
+sky position of interest.
+
+<p align="center">
+   <img src="docs/expert_navigation_drawer_src.png" alt="expert navigation drawer" width="256" class="center"/>  &emsp; <img src="docs/expert_source_selection.png" alt="expert source selection" width="256" class="center"/>
+</p>
 
