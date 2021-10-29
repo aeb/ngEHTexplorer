@@ -47,8 +47,13 @@ On start up, you should see the "quickstart" source selection screen:
 The navigation drawer (circled above) is the primary way to move through the various features of the app.  The app will intially start in "Quickstart" mode, which has a reduced set of features.  To enter "Expert mode", open the navigation drawer and select the switch at the top.
 
 <p align="center">
-   <img src="docs/quickstart_navigation_drawer_qsex.png" alt="quickstart navigation drawer" width="256" class="center"/>  &emsp; <img src="docs/expert_navigation_drawer.png" alt="quickstart navigation drawer" width="256" class="center"/>
+   <img src="docs/quickstart_navigation_drawer_qsex.png" alt="quickstart navigation drawer" width="256" class="center"/>  &emsp; <img src="docs/expert_navigation_drawer.png" alt="expert navigation drawer" width="256" class="center"/>
 </p>
 
+From thet navigation drawer you can select a variety of screens.  We begin with the Target screen, which permits selecting the sky position of interest.
+
+<p align="center">
+   <img src="docs/expert_navigation_drawer_tg.png" alt="expert navigation drawer" width="256" class="center"/>  &emsp; <img src="docs/expert_target_selection.png" alt="expert target selection" width="256" class="center"/>
+</p>
 
 
