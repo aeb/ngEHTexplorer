@@ -39,4 +39,13 @@ You can normally install these (locally) with pip:
 
 ## Tour
 On start up, you should see the "quickstart" source selection screen:
-<img src="docs/quickstart_selection_screen.png" alt="quickstart selection scree" width="512"/>
+
+<img src="docs/quickstart_selection_screen.png" alt="quickstart selection screen" width="400"/>
+
+
+The navigation drawer (circled above) is the primary way to move through the various features of the app.  The app will intially start in "Quickstart" mode, which has a reduced set of features.  To enter "Expert mode", open the navigation drawer and select the switch at the top.
+
+<img src="docs/quickstart_navigation_drawer.png" alt="quickstart navigation drawer" width="400"/>
+<img src="docs/expert_navigation_drawer.png" alt="quickstart navigation drawer" width="400"/>
+
+
