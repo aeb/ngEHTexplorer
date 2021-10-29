@@ -13,6 +13,7 @@ ngEHTexplorer is an interactive "app" that enables you to explore the impact of 
 
 and combinations thereof.
 
+## Getting Started
 To run ngEHTexplorer:
 1. Clone the ngEHTexplorer github repository:
 > $ git clone https://github.com/aeb/ngEHTexplorer.git
