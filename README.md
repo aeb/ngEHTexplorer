@@ -56,11 +56,14 @@ From thet navigation drawer you can select a variety of screens.  We begin with 
    <img src="docs/expert_navigation_drawer_tg.png" alt="expert navigation drawer" width="256" class="center"/>  &emsp; <img src="docs/expert_target_selection.png" alt="expert target selection" width="256" class="center"/>
 </p>
 
-We now turn to the Source screen, which permits selecting the source image.  Options include the source itself (dragging left/right on teh image), the 
-
-sky position of interest.
+We now turn to the Source screen, which permits selecting the source image.  Options include the source itself (dragging left/right on teh image), the field of view of the image shown, total flux in the image, and observation frequency.  
 
 <p align="center">
    <img src="docs/expert_navigation_drawer_src.png" alt="expert navigation drawer" width="256" class="center"/>  &emsp; <img src="docs/expert_source_selection.png" alt="expert source selection" width="256" class="center"/>
 </p>
 
+It is possible to simulate multi-frequency observations, i.e., observations in which multiple frequencies are reconstructed simultaneously, assuming perfect phase transfer among the frequencies.  To do this, select the "Multi-freq." switch, and set the upper and lower frequency range.
+
+<p align="center">
+   <img src="docs/expert_source_selection_multifreq.png" alt="multi-frequency option" width="256" class="center"/>  &emsp; <img src="docs/expert_source_selection_multifreq2.png" alt="multi-frequency range selection" width="256" class="center"/>
+</p>
