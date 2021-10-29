@@ -71,7 +71,7 @@ It is possible to simulate multi-frequency observations, i.e., observations in w
 The global positions of the array can be visualized on the "Array" screen.
 
 <p align="center">
-   <img src="docs/expert_navigation_drawer_arr.png" alt="expert navigation drawer" width="256" class="center"/> &emsp; <img src="docs/expert_source_selection_menu.png" alt="multi-frequency range selection" width="256" class="center"/>
+   <img src="docs/expert_navigation_drawer_arr.png" alt="expert navigation drawer" width="256" class="center"/> &emsp; <img src="docs/expert_array.png" alt="multi-frequency range selection" width="256" class="center"/>
 </p>
 
 Different arrays can be selected (also on the "Baselines" and "Image" screeens) by selecting the array name.  Selecting "ngEHT+" allows adding arbitrary additional array locations.
