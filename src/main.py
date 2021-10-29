@@ -1893,6 +1893,21 @@ class Abbrv_DataSetSelectionPage(BoxLayout) :
                           False)
         # M87
         self.targets.append({'RA':self.RA_hr(12,30,49.42338),'Dec':self.Dec_deg(12,23,28.0439)})
+
+        self.ic.add_image([path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_jet_086.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_jet_230.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_jet_345.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_jet_480.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_jet_690.png"))],
+                          [path.abspath(path.join(path.dirname(__file__),"source_images/jet_086.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_230.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_345.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_480.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_690.npy"))],
+                          "Simulated jet in Messier 87. (Credit: R. Meibody)",
+                          False)
+        # M87
+        self.targets.append({'RA':self.RA_hr(12,30,49.42338),'Dec':self.Dec_deg(12,23,28.0439)})
         
         self.ic.add_image([path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_SGRA_230.png")),
                            path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_SGRA_230.png")),
@@ -2138,6 +2153,19 @@ class DataSetSelectionPage(BoxLayout) :
                            path.abspath(path.join(path.dirname(__file__),"source_images/GRRT_IMAGE_data1400_freq345.npy")),
                            path.abspath(path.join(path.dirname(__file__),"source_images/GRRT_IMAGE_data1400_freq345.npy"))],
                           "Simulated jet appropriate for M87. (Credit: A. Chael)",
+                          False)
+
+        self.ic.add_image([path.abspath(path.join(path.dirname(__file__),"source_images/jet_086.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_230.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_345.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_480.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_690.png"))],
+                          [path.abspath(path.join(path.dirname(__file__),"source_images/jet_086.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_230.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_345.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_480.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet_690.npy"))],
+                          "Simulated jet appropriate for M87. (Credit: R. Meibody)",
                           False)
         # self.ic.add_image(path.abspath(path.join(path.dirname(__file__),"source_images/M87_230.png")),
         #                   path.abspath(path.join(path.dirname(__file__),"source_images/GRRT_IMAGE_data1400_freq230.npy")),
