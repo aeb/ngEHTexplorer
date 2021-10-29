@@ -83,7 +83,7 @@ Different arrays can be selected (also on the "Baselines" and "Image" screeens) 
 The "uv coverage" of the desired array can be visualized on the "Baselines" screen.  A number of submenus can be opened, permitting the selection/deselection of individual stations, observation time ranges, ngEHT antenna diameters, and bandwidths.
 
 <p align="center">
-   <img src="docs/expert_navigation_drawer_bls.png" alt="expert navigation drawer" width="256" class="center"/> &emsp; <img src="docs/expert_baselines.png" alt="expert baselines screen" width="256" class="center"/> &emsp; <img src="docs/expert_baselines_menu2.png" alt="expert menu options" width="256" class="center"/>
+   <img src="docs/expert_navigation_drawer_bsl.png" alt="expert navigation drawer" width="256" class="center"/> &emsp; <img src="docs/expert_baselines.png" alt="expert baselines screen" width="256" class="center"/> &emsp; <img src="docs/expert_baseline_menu2.png" alt="expert menu options" width="256" class="center"/>
 </p>
 
 
