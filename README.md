@@ -10,6 +10,7 @@ ngEHTexplorer is an interactive "app" that enables you to explore the impact of 
 - performance over different observation times and duration
 - performance for different target sky positions
 - performancce on various source images (incl. your own!)
+
 and combinations thereof.
 
 To run ngEHTexplorer:
