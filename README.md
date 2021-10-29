@@ -69,7 +69,7 @@ We now turn to the Source screen, which permits selecting the source image.  Opt
    <img src="docs/expert_navigation_drawer_src.png" alt="expert navigation drawer" width="256" class="center"/>  &emsp; <img src="docs/expert_source_selection.png" alt="expert source selection" width="256" class="center"/>
 </p>
 
-It is possible to simulate multi-frequency observations, i.e., observations in which multiple frequencies are reconstructed simultaneously, assuming perfect phase transfer among the frequencies.  To do this, select the "Multi-freq." switch, and set the upper and lower frequency range.
+It is possible to simulate multi-frequency observations, i.e., observations in which multiple frequencies are reconstructed simultaneously, assuming perfect phase transfer among them.  To do this, select the "Multi-freq." switch, and set the upper and lower frequency range.
 
 <p align="center">
    <img src="docs/expert_source_selection_multifreq.png" alt="multi-frequency option" width="256" class="center"/>  &emsp; <img src="docs/expert_source_selection_multifreq2.png" alt="multi-frequency range selection" width="256" class="center"/>
