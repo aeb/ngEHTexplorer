@@ -3,14 +3,13 @@ An interactive tool with which to explore the possible imaging performance of ca
 
 ## Welcome!
 ngEHTexplorer is an interactive "app" that enables you to explore the impact of different ngEHT architecture choices on image reconstructions.  It is possible to investigate:
-- different arrays
-- add/remove stations
-- multiple frequecies (including multi-frequency reconstructions)
-- various bandwidths bandwidth
-- ngEHT dish size
-- observation time and duration
-- arbitrary target locations
-- various source images
+- performance of different arrays (incl. add/remove stations)
+- imaging at multiple frequecies (incl. simultaneous multi-freq.)
+- the impact of receiver bandwidth
+- the impact of ngEHT dish size
+- performance over different observation times and duration
+- performance for different target sky positions
+- performancce on various source images (incl. your own!)
 and combinations thereof.
 
 To run ngEHTexplorer:
