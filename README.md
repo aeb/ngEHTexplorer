@@ -39,4 +39,4 @@ You can normally install these (locally) with pip:
 
 ## Tour
 On start up, you should see the "quickstart" source selection screen:
-<img src="docs/quickstart_selection_screen.png" alt="quickstart selection scree" width="200"/>
+<img src="docs/quickstart_selection_screen.png" alt="quickstart selection scree" width="512"/>
