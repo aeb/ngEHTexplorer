@@ -68,7 +68,7 @@ It is possible to simulate multi-frequency observations, i.e., observations in w
    <img src="docs/expert_source_selection_multifreq.png" alt="multi-frequency option" width="256" class="center"/>  &emsp; <img src="docs/expert_source_selection_multifreq2.png" alt="multi-frequency range selection" width="256" class="center"/>
 </p>
 
-The global positions of the array can be visualized on the "Array" screen.
+The global positions of the array can be visualized on the "Array" screen.  The map can be scrolled (mouse) and zoomed (+/-) in the normal way.
 
 <p align="center">
    <img src="docs/expert_navigation_drawer_arr.png" alt="expert navigation drawer" width="256" class="center"/> &emsp; <img src="docs/expert_array.png" alt="multi-frequency range selection" width="256" class="center"/>
@@ -80,10 +80,23 @@ Different arrays can be selected (also on the "Baselines" and "Image" screeens) 
    <img src="docs/expert_array_mn.png" alt="expert array menu" width="256" class="center"/> &emsp; <img src="docs/expert_array_menu_sel.png" alt="expert menu selection" width="256" class="center"/> &emsp; <img src="docs/expert_array2.png" alt="expert menu selected ngEHT 6" width="256" class="center"/>
 </p>
 
-The "uv coverage" of the desired array can be visualized on the "Baselines" screen.  A number of submenus can be opened, permitting the selection/deselection of individual stations, observation time ranges, ngEHT antenna diameters, and bandwidths.
+The "uv coverage" of the desired array can be visualized on the "Baselines" screen.  A number of submenus can be opened, permitting the selection/deselection of individual stations, observation time ranges, ngEHT antenna diameters, and bandwidths.  The current screen will be updated automatically as these options are adjusted, which makes it possible to explore the deependence of these parameters in real time.  The plot can be scrolled (mouse) and zoomed (+/-) in the normal way.
 
 <p align="center">
    <img src="docs/expert_navigation_drawer_bsl.png" alt="expert navigation drawer" width="256" class="center"/> &emsp; <img src="docs/expert_baselines.png" alt="expert baselines screen" width="256" class="center"/> &emsp; <img src="docs/expert_baseline_menu2.png" alt="expert menu options" width="256" class="center"/>
+</p>
+
+The image associated with the selected target location, source image, and array is shown in the "Image" screen.  Image reconstruction is done in real time.  The colormap shows the image with a linear transfer function; contours indicate a logarithmic transfer function with thick contours denoting factors of 10 below the maximum brightness.  The image can be scrolled (mouse) and zoomed (+/-) in the normal way.
+
+<p align="center">
+   <img src="docs/expert_navigation_drawer_img.png" alt="expert navigation drawer" width="256" class="center"/> &emsp; <img src="docs/expert_image.png" alt="expert image screen" width="256" class="center"/>
+</p>
+
+
+Specifications, including array performance metrics are included on the "Specifications" screen.  These are updated as the options on the other screens are modified.
+
+<p align="center">
+   <img src="docs/expert_navigation_drawer_spec.png" alt="expert navigation drawer" width="256" class="center"/> &emsp; <img src="docs/expert_specs.png" alt="expert specifications screen" width="256" class="center"/>
 </p>
 
 
