@@ -21,7 +21,7 @@ ngEHTexplorer is an interactive "app" that enables you to explore the impact of 
 and combinations thereof.
 
 ## Getting Started
-To run ngEHTexplorer:
+To run ngEHTexplorer on Mac OSX, Linux, or other Posix systems:
 1. Clone the ngEHTexplorer github repository:
 > $ git clone https://github.com/aeb/ngEHTexplorer.git
 2. Descend into the ngEHTexplorer directory:
@@ -29,13 +29,21 @@ To run ngEHTexplorer:
 3. Run the executable:
 > $ ./ngEHTexplorer
 
+To run ngEHTexplorerr on Windows you may need to run the python script manually:
+1. Clone the ngEHTexplorer github repository:
+> $ git clone https://github.com/aeb/ngEHTexplorer.git
+2. Descend into the ngEHTexplorer/src directory:
+> $ cd ngEHTexplorer/src
+3. Run the executable:
+> $ python3 main.py
+
 You may need to edit the top of ngEHTexplorer to set the executables for your python3 and pip3 installations.
 
 
 
 ## Requirements
 ngEHTexplorer is built with Python.  To run ngEHTexplorer requries:
-- Python3 (3.7 or later)
+- Python3 (3.7-9; some conflicts with 3.10 have been reported)
 - kivy
 - kivymd
 - matplotlib
