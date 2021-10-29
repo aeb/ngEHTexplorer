@@ -1909,6 +1909,23 @@ class Abbrv_DataSetSelectionPage(BoxLayout) :
         # Sgr A
         self.targets.append({'RA':self.RA_hr(17,45,40.049),'Dec':self.Dec_deg(-29,0,28.118)})
 
+
+        self.ic.add_image([path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_RIAF_86.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_RIAF_230.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_RIAF_345.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_RIAF_480.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/quickstart_RIAF_690.png"))],
+                          [path.abspath(path.join(path.dirname(__file__),"ngeht_Avery_hamr_SgrA_2048_86GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"ngeht_Avery_hamr_SgrA_2048_230GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"ngeht_Avery_hamr_SgrA_2048_345GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"ngeht_Avery_hamr_SgrA_2048_480GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"ngeht_Avery_hamr_SgrA_2048_690GHz_3087.npy"))],
+                          "Simulated accretion flow at the Galactic center! (Credit: K. Chatterjee)",
+                          False)
+        # Sgr A
+        self.targets.append({'RA':self.RA_hr(17,45,40.049),'Dec':self.Dec_deg(-29,0,28.118)})
+
+        
         # self.ic.add_image([path.abspath(path.join(path.dirname(__file__),"source_images/riaf_freq_8.6e+10_0003.png")),
         #                    path.abspath(path.join(path.dirname(__file__),"source_images/riaf_freq_2.3e+11_0003.png")),
         #                    path.abspath(path.join(path.dirname(__file__),"source_images/riaf_freq_3.45e+11_0003.png")),
@@ -2142,6 +2159,20 @@ class DataSetSelectionPage(BoxLayout) :
                            path.abspath(path.join(path.dirname(__file__),"source_images/fromm345_scat.npy"))],
                           "Simulated accretion disk, scattered by the Galactic disk. (Credit: C. Fromm)",
                           False)
+
+        self.ic.add_image([path.abspath(path.join(path.dirname(__file__),"source_images/RIAF_86.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/RIAF_230.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/RIAF_345.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/RIAF_480.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/RIAF_690.png"))],
+                          [path.abspath(path.join(path.dirname(__file__),"source_images/ngeht_Avery_hamr_SgrA_2048_86GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/ngeht_Avery_hamr_SgrA_2048_230GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/ngeht_Avery_hamr_SgrA_2048_345GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/ngeht_Avery_hamr_SgrA_2048_480GHz_3087.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/ngeht_Avery_hamr_SgrA_2048_690GHz_3087.npy"))],
+                          "Simulated accretion flow at the Galactic center! (Credit: K. Chatterjee)",
+                          False)
+
         # self.ic.add_image(path.abspath(path.join(path.dirname(__file__),"source_images/SGRA_230.png")),
         #                   path.abspath(path.join(path.dirname(__file__),"source_images/fromm230_scat.npy")),
         #                   "Simulated RIAF at 230 GHz.",
@@ -2576,7 +2607,7 @@ class SpecificationsPage(BoxLayout) :
         else :
             err_anchor = np.min(err_list_ngeht)
             # print("err anchor:",err_anchor)
-            baseline_sensitivity = 7 * np.real(err_anchor) * 1e3
+            baseline_sensitivity = np.real(err_anchor) * 1e3 * _snr_cut
             self.est_baseline_sensitivity = "%2g mJy"%(self.sig_fig(baseline_sensitivity,2))
 
         # Get the sensitivity between two most sensitive elements of the current array            
@@ -2585,7 +2616,7 @@ class SpecificationsPage(BoxLayout) :
         else :
             err_max = np.min(err_list_all)
             # print("err anchor:",err_max)
-            point_source_sensitivity = 7 * np.real(err_max) * 1e3
+            point_source_sensitivity = np.real(err_max) * 1e3 * _snr_cut
             self.est_point_source_sensitivity = "%2g mJy"%(self.sig_fig(point_source_sensitivity,2))
             
         
