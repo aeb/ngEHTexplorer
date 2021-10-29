@@ -1,6 +1,13 @@
 # ngEHTexplorer
 An interactive tool with which to explore the possible imaging performance of candidate ngEHT architectures.
 
+[Summary](##-Welcome!)
+[Getting started](##-Getting-Started)
+[Feature Tour](##-Feature-Tour)
+
+
+
+
 ## Welcome!
 ngEHTexplorer is an interactive "app" that enables you to explore the impact of different ngEHT architecture choices on image reconstructions.  It is possible to investigate:
 - performance of different arrays (incl. add/remove stations)
@@ -37,7 +44,7 @@ You can normally install these (locally) with pip:
 > $ pip3 install --upgrade kivy kivymd matplotlib numpy --user
 
 
-## Tour
+## Feature Tour
 On start up, you should see the "quickstart" source selection screen:
 
 <p align="center">
