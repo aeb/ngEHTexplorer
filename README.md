@@ -21,7 +21,7 @@ ngEHTexplorer is an interactive "app" that enables you to explore the impact of 
 and combinations thereof.
 
 ## Getting Started
-To run ngEHTexplorer on Mac OSX, Linux, or other Posix systems:
+To run ngEHTexplorer on Mac OSX, Linux, or other POSIX systems:
 1. Clone the ngEHTexplorer github repository:
 > $ git clone https://github.com/aeb/ngEHTexplorer.git
 2. Descend into the ngEHTexplorer directory:
