@@ -1,8 +1,8 @@
 # ngEHTexplorer
 An interactive tool with which to explore the possible imaging performance of candidate ngEHT architectures.
 
-- [Summary](#Summary-Description)
-- [Getting started](#Getting-Started)
+- [Summary Description](#Summary-Description)
+- [Getting Started](#Getting-Started)
 - [Feature Tour](#Feature-Tour)
 
 
