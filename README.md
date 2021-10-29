@@ -48,6 +48,7 @@ ngEHTexplorer is built with Python.  To run ngEHTexplorer requries:
 - kivymd
 - matplotlib
 - numpy
+
 You can normally install these (locally) with pip:
 > $ pip3 install --upgrade kivy kivymd matplotlib numpy --user
 
