@@ -439,7 +439,7 @@ class InteractiveImageReconstructionPlot(InteractivePlotWidget) :
         y1d = np.fft.fftshift(np.fft.fftfreq(v2.shape[1],d=(v2[1,1]-v2[0,0])*1e9)/uas2rad)
         xarr,yarr = np.meshgrid(-x1d,-y1d)
 
-        print("FoV in practice:",x1d[-1]-x1d[0])
+        #print("FoV in practice:",x1d[-1]-x1d[0])
 
         # Compute image estimate via FFT
         Iarr = np.fft.fftshift(np.real(np.fft.ifft2(np.fft.ifftshift(V2))))
