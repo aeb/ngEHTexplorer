@@ -2468,6 +2468,9 @@ class SpecificationsPage(BoxLayout) :
 
     
     def generate_specs(self) :
+
+        self.bandwidth = float(8.0 * (7.0/_snr_cut)**2)
+        
         self.get_station_counts()
         self.get_data_rate()
         self.get_data_statistics()
