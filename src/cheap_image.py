@@ -296,7 +296,7 @@ class InteractiveImageReconstructionPlot(InteractivePlotWidget) :
         
     ##########
     # Low-level image reconstruction function
-    def reconstruct_image(self,datadict,statdict,time_range=None,snr_cut=None,ngeht_diameter=6,f=2,method='cubic',make_hermitian=False) :
+    def reconstruct_image(self,datadict,statdict,time_range=None,snr_cut=None,ngeht_diameter=6,f=2,method='cubic',make_hermitian=False,fov_min=1000.0) :
 
         # print("Started image reconstruction in thread")
         if (__cheap_image_perf__) :
@@ -383,7 +383,16 @@ class InteractiveImageReconstructionPlot(InteractivePlotWidget) :
         # Get the region on which to compute gridded visibilities
         umax = np.max(ddnew['u'])
         vmax = np.max(ddnew['v'])
-        u2,v2 = np.meshgrid(np.linspace(-f*umax,f*umax,256),np.linspace(-f*vmax,f*vmax,256))
+        # u2,v2 = np.meshgrid(np.linspace(-f*umax,f*umax,256),np.linspace(-f*vmax,f*vmax,256))
+        # Nxy = 2**( max(8,min(10,int(np.ceil(np.log2(500.0/(1.0/(umax*1e9))/uas2rad))))) )
+        # print("Nxy:",Nxy,)
+
+        Nxy = 256
+        #print("FoV:",(Nxy-2)/(2*f*umax*1e9 * uas2rad))
+        fov_est = (Nxy-2)/(2*f*umax*1e9 * uas2rad)
+        #print("Nxy min:",Nxy * 2**( max(0,min(4,int(np.ceil(np.log2(fov_min/fov_est))))) ) )
+        Nxy = Nxy * 2**( max(0,min(4,int(np.ceil(np.log2(fov_min/fov_est))))) )
+        u2,v2 = np.meshgrid(np.linspace(-f*umax,f*umax,Nxy),np.linspace(-f*vmax,f*vmax,Nxy))
 
         # SciPy
         # pts = np.array([ddnew['u'],ddnew['v']]).T
@@ -429,6 +438,8 @@ class InteractiveImageReconstructionPlot(InteractivePlotWidget) :
         x1d = np.fft.fftshift(np.fft.fftfreq(u2.shape[0],d=(u2[1,1]-u2[0,0])*1e9)/uas2rad)
         y1d = np.fft.fftshift(np.fft.fftfreq(v2.shape[1],d=(v2[1,1]-v2[0,0])*1e9)/uas2rad)
         xarr,yarr = np.meshgrid(-x1d,-y1d)
+
+        print("FoV in practice:",x1d[-1]-x1d[0])
 
         # Compute image estimate via FFT
         Iarr = np.fft.fftshift(np.real(np.fft.ifft2(np.fft.ifftshift(V2))))
