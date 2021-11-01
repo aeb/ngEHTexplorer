@@ -2245,7 +2245,21 @@ class DataSetSelectionPage(BoxLayout) :
                            path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet_345.npy")),
                            path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet_480.npy")),
                            path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet_690.npy"))],
-                          "Cartoon binary with a flux ratio of 10.",
+                          "Cartoon binary with a flux ratio of 10:1.",
+                          False)
+
+
+        self.ic.add_image([path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet2_086.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet2_230.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet2_345.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet2_480.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet2_690.png"))],
+                          [path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet2_086.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet2_230.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet2_345.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet2_480.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/binary_jet2_690.npy"))],
+                          "Cartoon binary with a flux ratio of 100:1.",
                           False)
         
 
