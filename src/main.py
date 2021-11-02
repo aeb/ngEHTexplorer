@@ -2276,6 +2276,19 @@ class DataSetSelectionPage(BoxLayout) :
                           "Cartoon binary point sources with a flux ratio of 300:1.",
                           False)
 
+        self.ic.add_image([path.abspath(path.join(path.dirname(__file__),"source_images/xrb_jet_086.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/xrb_jet_230.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/xrb_jet_345.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/xrb_jet_480.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/xrb_jet_690.png"))],
+                          [path.abspath(path.join(path.dirname(__file__),"source_images/xrb_jet_086.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/xrb_jet_230.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/xrb_jet_345.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/xrb_jet_480.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/xrb_jet_690.npy"))],
+                          "Cartoon X-ray binary jet.",
+                          False)
+        
         self.ic.add_image(path.abspath(path.join(path.dirname(__file__),"source_images/Einstein2.png")),
                           path.abspath(path.join(path.dirname(__file__),"source_images/Einstein2.png")),
                           "The face of gravity.",
