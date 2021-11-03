@@ -2167,6 +2167,20 @@ class DataSetSelectionPage(BoxLayout) :
                            path.abspath(path.join(path.dirname(__file__),"source_images/jet_690.npy"))],
                           "Simulated jet appropriate for M87. (Credit: R. Meibody)",
                           False)
+
+        self.ic.add_image([path.abspath(path.join(path.dirname(__file__),"source_images/jet2_086.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet2_230.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet2_345.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet2_480.png")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet2_690.png"))],
+                          [path.abspath(path.join(path.dirname(__file__),"source_images/jet2_086.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet2_230.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet2_345.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet2_480.npy")),
+                           path.abspath(path.join(path.dirname(__file__),"source_images/jet2_690.npy"))],
+                          "Simulated jet appropriate for M87 at a slightly later time. (Credit: R. Meibody)",
+                          False)
+
         # self.ic.add_image(path.abspath(path.join(path.dirname(__file__),"source_images/M87_230.png")),
         #                   path.abspath(path.join(path.dirname(__file__),"source_images/GRRT_IMAGE_data1400_freq230.npy")),
         #                   "Simulated jet at 230 GHz.",
@@ -2798,10 +2812,10 @@ class SpecificationsPage(BoxLayout) :
         # self.est_angular_resolution =  "%0.1f uas"%(int(angular_resolution*10+0.5)/10.0)
         # self.est_field_of_view =  "%0.1f mas"%(int(field_of_view*10+0.5)/10.0)
 
-        self.est_angular_resolution =  "%g \u03BCas"%(self.sig_fig(angular_resolution,1))
+        self.est_angular_resolution =  "%g \u03BCas"%(self.sig_fig(angular_resolution,2))
 
         if (field_of_view>=1) :
-            self.est_field_of_view =  "%g mas"%(self.sig_fig(field_of_view,1))
+            self.est_field_of_view =  "%g mas"%(self.sig_fig(field_of_view,2))
         else :
             self.est_field_of_view =  "%g \u03BCas"%(self.sig_fig(field_of_view*1e3,1))
 
