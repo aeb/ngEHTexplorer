@@ -282,9 +282,9 @@ class Abbrv_MenuedReconstructionPlot(BoxLayout) :
         if __generate_fast_start_data__ :
             print("Abbrv_MenuedReconstructionPlot: Generating fast start data")
             self.update(self.ddict,self.sdict,time_range=self.time_range,snr_cut=self.snr_cut,ngeht_diameter=self.ngeht_diameter,limits=self.limits)
-            np.save("fast_start_data/Abbrv_MenuedReconstructionPlot.npy",[self.argument_hash,self.irp.buf,self.irp.arr])
+            np.save("fast_start_data/Abbrv_MenuedReconstructionPlot.npy",[self.argument_hash,self.irp.arr])
         else :
-            self.argument_hash,self.irp.buf,self.irp.arr = np.load("fast_start_data/Abbrv_MenuedReconstructionPlot.npy",allow_pickle=True)
+            self.argument_hash,self.irp.arr = np.load("fast_start_data/Abbrv_MenuedReconstructionPlot.npy",allow_pickle=True)
             self.irp.texture.blit_buffer(self.irp.arr,colorfmt='rgba',bufferfmt='ubyte')
             # self.update(self.ddict,self.sdict,time_range=self.time_range,snr_cut=self.snr_cut,ngeht_diameter=self.ngeht_diameter,limits=self.limits)
             if (__main_debug__) :
@@ -417,9 +417,9 @@ class MenuedReconstructionPlot(BoxLayout) :
         if __generate_fast_start_data__ :
             print("MenuedReconstructionPlot: Generating fast start data")
             self.update(self.ddict,self.sdict,time_range=self.time_range,snr_cut=self.snr_cut,ngeht_diameter=self.ngeht_diameter,limits=self.limits)
-            np.save("fast_start_data/MenuedReconstructionPlot.npy",[self.argument_hash,self.irp.buf,self.irp.arr])
+            np.save("fast_start_data/MenuedReconstructionPlot.npy",[self.argument_hash,self.irp.arr])
         else :
-            self.argument_hash,self.irp.buf,self.irp.arr = np.load("fast_start_data/Abbrv_MenuedReconstructionPlot.npy",allow_pickle=True)
+            self.argument_hash,self.irp.arr = np.load("fast_start_data/Abbrv_MenuedReconstructionPlot.npy",allow_pickle=True)
             self.irp.texture.blit_buffer(self.irp.arr,colorfmt='rgba',bufferfmt='ubyte')
             # self.update(self.ddict,self.sdict,time_range=self.time_range,snr_cut=self.snr_cut,ngeht_diameter=self.ngeht_diameter,limits=self.limits)
             if (__main_debug__) :
