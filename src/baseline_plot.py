@@ -17,6 +17,8 @@ from kivy.utils import get_color_from_hex
 
 __baseline_plot_debug__ = False
 
+import data
+
 
 class InteractiveBaselinePlot_kivygraph(ThemableBehavior,FloatLayout) :
 
@@ -71,7 +73,7 @@ class InteractiveBaselinePlot_kivygraph(ThemableBehavior,FloatLayout) :
         stations = list(statdict.keys())
         keep = np.array([ (datadict['s1'][j] in stations) and (datadict['s2'][j] in stations) for j in range(len(datadict['s1'])) ])
         ddtmp = {}
-        for key in ['u','v','V','s1','s2','t','err'] :
+        for key in ['u','v','V','s1','s2','t','err','scan_time'] :
             ddtmp[key] = datadict[key][keep]
 
         self.ddict = ddtmp
@@ -91,39 +93,43 @@ class InteractiveBaselinePlot_kivygraph(ThemableBehavior,FloatLayout) :
                 keep = (self.ddict['t']>=time_range[0])*(self.ddict['t']<time_range[1])
                 self.on = self.on*keep
 
-                    
+
         # Cut points with S/N less than the specified minimum value
         if (not snr_cut is None)  and (snr_cut>0):
-            if (len(self.ddict['u'])>0) :
-                # Get a list of error adjustments based on stations
-                diameter_correction_factor = {}
-                for s in stations :
-                    if (statdict[s]['exists']) :
-                        diameter_correction_factor[s] = 1.0
-                    else :
-                        diameter_correction_factor[s] = statdict[s]['diameter']/ngeht_diameter
+            keep = data.get_snr_cut_flag(statdict,self.ddict,snr_cut,ngeht_diameter)
 
-                # Baseline-by-baseline filtering
-                # keep = np.array([ np.abs(self.ddict['V'][j])/(self.ddict['err'][j].real * diameter_correction_factor[self.ddict['s1'][j]] * diameter_correction_factor[self.ddict['s2'][j]]) > snr_cut for j in range(len(self.ddict['s1'])) ])
-                # Ad hoc phasing
-                keep = np.array([True]*len(self.ddict['s1']))
-                jtot = np.arange(self.ddict['t'].size)
-                for tscan in np.unique(self.ddict['t']) :
-                    inscan = (self.ddict['t']==tscan)
-                    s1_scan = self.ddict['s1'][inscan]
-                    s2_scan = self.ddict['s2'][inscan]
-                    snr_scan = np.array([ np.abs(self.ddict['V'][inscan][j])/( self.ddict['err'][inscan][j].real * diameter_correction_factor[s1_scan[j]] * diameter_correction_factor[s2_scan[j]] ) for j in range(len(s1_scan)) ])
-                    detection_station_list = []
-                    for ss in np.unique(np.append(s1_scan,s2_scan)) :
-                        snr_scan_ss = np.append(snr_scan[s1_scan==ss],snr_scan[s2_scan==ss])
-                        if np.any(snr_scan_ss > snr_cut ) :
-                            detection_station_list.append(ss)
-                    keep[jtot[inscan]] = np.array([ (s1_scan[k] in detection_station_list) and (s2_scan[k] in detection_station_list) for k in range(len(s1_scan)) ])
+            
+            # if (len(self.ddict['u'])>0) :
+            #     # Get a list of error adjustments based on stations
+            #     diameter_correction_factor = {}
+            #     for s in stations :
+            #         if (statdict[s]['exists']) :
+            #             diameter_correction_factor[s] = 1.0
+            #         else :
+            #             diameter_correction_factor[s] = statdict[s]['diameter']/ngeht_diameter
+
+            #     # Baseline-by-baseline filtering
+            #     keep = np.array([ np.abs(self.ddict['V'][j])/(self.ddict['err'][j].real * diameter_correction_factor[self.ddict['s1'][j]] * diameter_correction_factor[self.ddict['s2'][j]]) > snr_cut/np.sqrt(self.ddict['scan_time'][j])/7.0 for j in range(len(self.ddict['s1'])) ])
+                
+            #     # Ad hoc phasing
+            #     # keep = np.array([False]*len(self.ddict['s1']))
+            #     jtot = np.arange(self.ddict['t'].size)
+            #     for tscan in np.unique(self.ddict['t']) :
+            #         inscan = (self.ddict['t']==tscan)
+            #         s1_scan = self.ddict['s1'][inscan]
+            #         s2_scan = self.ddict['s2'][inscan]
+            #         snr_scan = np.array([ np.abs(self.ddict['V'][inscan][j])/( self.ddict['err'][inscan][j].real * diameter_correction_factor[s1_scan[j]] * diameter_correction_factor[s2_scan[j]] ) for j in range(len(s1_scan)) ])
+            #         detection_station_list = []
+            #         for ss in np.unique(np.append(s1_scan,s2_scan)) :
+            #             snr_scan_ss = np.append(snr_scan[s1_scan==ss],snr_scan[s2_scan==ss])
+            #             if np.any(snr_scan_ss > snr_cut ) :
+            #                 detection_station_list.append(ss)
+            #         keep[jtot[inscan]] = keep[jtot[inscan]]*np.array([ (s1_scan[k] in detection_station_list) and (s2_scan[k] in detection_station_list) for k in range(len(s1_scan)) ])
                     
                         
                     
                 
-                self.on = self.on*keep
+            self.on = self.on*keep
 
 
 

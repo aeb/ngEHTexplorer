@@ -2660,8 +2660,11 @@ class SpecificationsPage(BoxLayout) :
 
 
     def sig_fig(self,val,n) :
-        mag = 10**(int(np.log10(val)-n+1))
-        return int(val/mag+0.5)*mag
+        if (np.isnan(val)) :
+            return np.nan
+        else :
+            mag = 10**(int(np.log10(val)-n+1))
+            return int(val/mag+0.5)*mag
         
 
     def estimate_performance(self) :
@@ -2752,36 +2755,37 @@ class SpecificationsPage(BoxLayout) :
         # Exclude stations not in current array
         keep = np.array([ (_datadict['s1'][j] in stations) and (_datadict['s2'][j] in stations) for j in range(len(_datadict['s1'])) ])
         ddtmp = {}
-        for key in ['u','v','V','s1','s2','t','err'] :
+        for key in ['u','v','V','s1','s2','t','err','scan_time'] :
             ddtmp[key] = _datadict[key][keep]
         keep = np.array([ _statdict[ddtmp['s1'][j]]['on'] and _statdict[ddtmp['s2'][j]]['on'] for j in range(len(ddtmp['s1'])) ])
-        for key in ['u','v','V','s1','s2','t','err'] :
+        for key in ['u','v','V','s1','s2','t','err','scan_time'] :
             ddtmp[key] = ddtmp[key][keep]
             
         # Cut points with S/N less than the specified minimum value
         if (not _snr_cut is None) and _snr_cut>0 :
             ddtmp2 = copy.deepcopy(ddtmp)
+            keep = data.get_snr_cut_flag(_statdict,ddtmp2,_snr_cut,_ngeht_diameter)
             
-            # Baseline-by-baseline filtering
-            # keep = np.array([ np.abs(ddtmp2['V'][j])/(ddtmp2['err'][j].real * diameter_correction_factor[ddtmp2['s1'][j]] * diameter_correction_factor[ddtmp2['s2'][j]]) > _snr_cut for j in range(len(ddtmp2['s1'])) ])
+            # # Baseline-by-baseline filtering
+            # keep = np.array([ np.abs(ddtmp2['V'][j])/(ddtmp2['err'][j].real * diameter_correction_factor[ddtmp2['s1'][j]] * diameter_correction_factor[ddtmp2['s2'][j]]) > _snr_cut/np.sqrt(ddtmp2['scan_time'][j])/7.0 for j in range(len(ddtmp2['s1'])) ])
 
-            # Ad hoc phasing
-            keep = np.array([True]*len(ddtmp2['s1']))
-            jtot = np.arange(ddtmp2['t'].size)
-            for tscan in np.unique(ddtmp2['t']) :
-                inscan = (ddtmp2['t']==tscan)
-                s1_scan = ddtmp2['s1'][inscan]
-                s2_scan = ddtmp2['s2'][inscan]
-                snr_scan = np.array([ np.abs(ddtmp2['V'][inscan][j])/( ddtmp2['err'][inscan][j].real * diameter_correction_factor[s1_scan[j]] * diameter_correction_factor[s2_scan[j]] ) for j in range(len(s1_scan)) ])
-                detection_station_list = []
-                for ss in np.unique(np.append(s1_scan,s2_scan)) :
-                    snr_scan_ss = np.append(snr_scan[s1_scan==ss],snr_scan[s2_scan==ss])
-                    if np.any(snr_scan_ss > _snr_cut ) :
-                        detection_station_list.append(ss)
-                keep[jtot[inscan]] = np.array([ (s1_scan[k] in detection_station_list) and (s2_scan[k] in detection_station_list) for k in range(len(s1_scan)) ])
-
-            ddtmp = {'u':np.array([]),'v':np.array([]),'V':np.array([]),'s1':np.array([]),'s2':np.array([]),'t':np.array([]),'err':np.array([])}
-            for key in ['u','v','V','s1','s2','t','err'] :
+            # # Ad hoc phasing
+            # # keep = np.array([False]*len(ddtmp2['s1']))
+            # jtot = np.arange(ddtmp2['t'].size)
+            # for tscan in np.unique(ddtmp2['t']) :
+            #     inscan = (ddtmp2['t']==tscan)
+            #     s1_scan = ddtmp2['s1'][inscan]
+            #     s2_scan = ddtmp2['s2'][inscan]
+            #     snr_scan = np.array([ np.abs(ddtmp2['V'][inscan][j])/( ddtmp2['err'][inscan][j].real * diameter_correction_factor[s1_scan[j]] * diameter_correction_factor[s2_scan[j]] ) for j in range(len(s1_scan)) ])
+            #     detection_station_list = []
+            #     for ss in np.unique(np.append(s1_scan,s2_scan)) :
+            #         snr_scan_ss = np.append(snr_scan[s1_scan==ss],snr_scan[s2_scan==ss])
+            #         if np.any(snr_scan_ss > _snr_cut ) :
+            #             detection_station_list.append(ss)
+            #     keep[jtot[inscan]] = keep[jtot[inscan]]*np.array([ (s1_scan[k] in detection_station_list) and (s2_scan[k] in detection_station_list) for k in range(len(s1_scan)) ])
+                
+            ddtmp = {'u':np.array([]),'v':np.array([]),'V':np.array([]),'s1':np.array([]),'s2':np.array([]),'t':np.array([]),'err':np.array([]),'scan_time':np.array([])}
+            for key in ['u','v','V','s1','s2','t','err','scan_time'] :
                 ddtmp[key] = ddtmp2[key][keep]
 
 
@@ -2790,7 +2794,7 @@ class SpecificationsPage(BoxLayout) :
         angular_resolution = 1.0/uvmax * 180.*3600e6/np.pi
 
         # Get the fov (shortest non-intrasite baseline)
-        ddtmp2 = {'u':np.array([]),'v':np.array([]),'V':np.array([]),'s1':np.array([]),'s2':np.array([]),'t':np.array([]),'err':np.array([])}
+        ddtmp2 = {'u':np.array([]),'v':np.array([]),'V':np.array([]),'s1':np.array([]),'s2':np.array([]),'t':np.array([]),'err':np.array([]),'scan_time':np.array([])}
         keep = np.array([True]*ddtmp['V'].size)
         for baseline in [['AA','AP'],['SM','JC']] :
             # print("Removing baseline",baseline[0],baseline[1])
@@ -2800,11 +2804,24 @@ class SpecificationsPage(BoxLayout) :
         # for j in np.arange(ddtmp['V'].size) :
         #     print(ddtmp['s1'][j],ddtmp['s2'][j],keep[j])
             
-        for key in ['u','v','V','s1','s2','t','err'] :
+        for key in ['u','v','V','s1','s2','t','err','scan_time'] :
             ddtmp2[key] = ddtmp[key][keep]
-        uvmin = np.sqrt(np.min( ddtmp2['u']**2 + ddtmp2['v']**2 )) * 1e9
-        imin = np.argmin( ddtmp2['u']**2 + ddtmp2['v']**2 )
-        field_of_view = 1.0/uvmin * 180.*3600e3/np.pi 
+
+        if (len(ddtmp2['u'])==0) :
+            uvmin = np.nan
+            field_of_view = np.nan
+            self.est_angular_resolution =  "N/A"
+            self.est_field_of_view =  "N/A"
+        
+        else :
+            uvmin = np.sqrt(np.min( ddtmp2['u']**2 + ddtmp2['v']**2 )) * 1e9
+            #imin = np.argmin( ddtmp2['u']**2 + ddtmp2['v']**2 )
+            field_of_view = 1.0/uvmin * 180.*3600e3/np.pi 
+            self.est_angular_resolution =  "%g \u03BCas"%(self.sig_fig(angular_resolution,2))
+            if (field_of_view>=1) :
+                self.est_field_of_view =  "%g mas"%(self.sig_fig(field_of_view,2))
+            else :
+                self.est_field_of_view =  "%g \u03BCas"%(self.sig_fig(field_of_view*1e3,2))
 
         # print("angular resolution:",angular_resolution)
         # print("field of view:",field_of_view,ddtmp2['s1'][imin],ddtmp2['s2'][imin])
@@ -2812,12 +2829,7 @@ class SpecificationsPage(BoxLayout) :
         # self.est_angular_resolution =  "%0.1f uas"%(int(angular_resolution*10+0.5)/10.0)
         # self.est_field_of_view =  "%0.1f mas"%(int(field_of_view*10+0.5)/10.0)
 
-        self.est_angular_resolution =  "%g \u03BCas"%(self.sig_fig(angular_resolution,2))
 
-        if (field_of_view>=1) :
-            self.est_field_of_view =  "%g mas"%(self.sig_fig(field_of_view,2))
-        else :
-            self.est_field_of_view =  "%g \u03BCas"%(self.sig_fig(field_of_view*1e3,1))
 
         
         ### Generate the image

@@ -23,6 +23,42 @@ import matplotlib.image as mi
 
 __data_debug__ = False
 
+#########
+# Identify data that passes SNR cuts
+def get_snr_cut_flag(statdict,datadict,snr_cut=7,ngeht_diameter=6) :
+
+                     
+    if (len(datadict['u'])==0) :
+        return []
+    else :
+        # Get a list of error adjustments based on stations
+        diameter_correction_factor = {}
+        for s in statdict.keys() :
+            if (statdict[s]['exists']) :
+                diameter_correction_factor[s] = 1.0
+            else :
+                diameter_correction_factor[s] = statdict[s]['diameter']/ngeht_diameter
+
+        # Baseline-by-baseline filtering
+        keep = np.array([ np.abs(datadict['V'][j])/(datadict['err'][j].real * diameter_correction_factor[datadict['s1'][j]] * diameter_correction_factor[datadict['s2'][j]]) > snr_cut/np.sqrt(datadict['scan_time'][j])/7.0 for j in range(len(datadict['s1'])) ])
+
+        # Ad hoc phasing
+        # keep = np.array([False]*len(datadict['s1']))
+        jtot = np.arange(datadict['t'].size)
+        for tscan in np.unique(datadict['t']) :
+            inscan = (datadict['t']==tscan)
+            s1_scan = datadict['s1'][inscan]
+            s2_scan = datadict['s2'][inscan]
+            snr_scan = np.array([ np.abs(datadict['V'][inscan][j])/( datadict['err'][inscan][j].real * diameter_correction_factor[s1_scan[j]] * diameter_correction_factor[s2_scan[j]] ) for j in range(len(s1_scan)) ])
+            detection_station_list = []
+            for ss in np.unique(np.append(s1_scan,s2_scan)) :
+                snr_scan_ss = np.append(snr_scan[s1_scan==ss],snr_scan[s2_scan==ss])
+                if np.any(snr_scan_ss > snr_cut ) :
+                    detection_station_list.append(ss)
+            keep[jtot[inscan]] = keep[jtot[inscan]]*np.array([ (s1_scan[k] in detection_station_list) and (s2_scan[k] in detection_station_list) for k in range(len(s1_scan)) ])
+
+        return keep
+
 
 #########
 # To read in data to get the 
@@ -43,12 +79,12 @@ def read_themis_data_file(v_file_name) :
     u = np.append(u,-u)
     v = np.append(v,-v)
     V = np.append(V,np.conj(V))
-    err = np.append(err,err)
+    err = np.append(err,err)/np.sqrt(600.0)
     t = np.append(t,t)
     s1d = np.append(s1,s2)
     s2d = np.append(s2,s1)
     
-    return {'u':u,'v':v,'V':V,'s1':s1d,'s2':s2d,'t':t,'err':err}
+    return {'u':u,'v':v,'V':V,'s1':s1d,'s2':s2d,'t':t,'err':err,'scan_time':600+0*err.real}
 
 #########
 # Binlinear interpolation
@@ -250,7 +286,7 @@ def generate_data_multi_frequency(freq_list,ra,dec,imgx,imgy,imgI,statdict,integ
         print("Made conjugates, all done!  Number of data points:",len(u))
 
     
-    return {'u':u,'v':v,'V':V,'s1':s1d,'s2':s2d,'t':t,'err':(1.0+1.0j)*err}
+    return {'u':u,'v':v,'V':V,'s1':s1d,'s2':s2d,'t':t,'err':(1.0+1.0j)*err,'scan_time':scan_time+0*err}
     
         
 #########
@@ -397,7 +433,7 @@ def generate_data_single_frequency(freq,ra,dec,imgx,imgy,imgI,statdict,integrati
         print("Made conjugates, all done!  Number of data points:",len(u))
 
     
-    return {'u':u,'v':v,'V':V,'s1':s1d,'s2':s2d,'t':t,'err':(1.0+1.0j)*err}
+    return {'u':u,'v':v,'V':V,'s1':s1d,'s2':s2d,'t':t,'err':(1.0+1.0j)*err,'scan_time':scan_time+0*err}
 
                         
                         
