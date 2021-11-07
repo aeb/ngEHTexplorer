@@ -114,6 +114,7 @@ _ngeht_diameter = 6
 _snr_cut = 7.0
 _ngeht_diameter_setting = 6
 _snr_cut_setting = 1
+_frequency_list = [230]
 
 _existing_arrays = ['EHT 2017','EHT 2022']
 _existing_station_list = ['PV','AZ','SM','LM','AA','AP','SP','JC','GL','PB','KP','HA']
@@ -1875,6 +1876,8 @@ class Abbrv_DataSetSelectionPage(BoxLayout) :
         self.source_flux = 1.0
         self.observation_frequency = 230.
 
+        global _frequency_list
+        _frequency_list = [self.observation_frequency]
 
         
         self.ic = data.ImageCarousel()
@@ -2049,6 +2052,8 @@ class Abbrv_DataSetSelectionPage(BoxLayout) :
     def adjust_observation_frequency(self,widget,val) :
         self.observation_frequency = self.ofs.observation_frequency()
         self.ofs_label2.text = self.ofs.hint_box_text(0)
+        global _frequency_list
+        _frequency_list = [self.observation_frequency]
         if (__main_debug__) :
             print("DataSelectionSliders.adjust_observation_frequency:",self.observation_frequency,val,self.ofs_label2.text)
         
@@ -2126,6 +2131,8 @@ class Abbrv_DataSetSelectionPage(BoxLayout) :
                                                   scale=self.source_size, \
                                                   total_flux=self.source_flux, \
                                                   taper_image=self.ic.taperable_list[self.ic.index])
+        global _frequency_list
+        _frequency_list = self.dss.observation_frequency_list()
             
 
         
@@ -2421,6 +2428,8 @@ class DataSetSelectionPage(BoxLayout) :
                                                   scale=self.dss.source_size, \
                                                   total_flux=self.dss.source_flux, \
                                                   taper_image=(self.dss.its.active and not self.dss.its.disabled))
+        global _frequency_list
+        _frequency_list = self.dss.observation_frequency_list()
             
 
 class LogoBackground(FloatLayout) :
@@ -2514,7 +2523,7 @@ class SpecificationsPage(BoxLayout) :
     new_stations = NumericProperty(0)
     ngeht_stations = NumericProperty(0)
     bandwidth = NumericProperty(8)
-    data_rate = NumericProperty(10)
+    data_rate = NumericProperty(10.0)
     number_of_baselines_total = NumericProperty(0)
     number_of_baselines_in_timerange = NumericProperty(0)
     number_of_baselines_above_snrcut = NumericProperty(0)
@@ -2535,7 +2544,7 @@ class SpecificationsPage(BoxLayout) :
     source_RA = StringProperty("--")
     source_Dec = StringProperty("--")
 
-
+    
     
     def generate_specs(self) :
 
@@ -2580,7 +2589,9 @@ class SpecificationsPage(BoxLayout) :
         
     def get_data_rate(self) :
         # 2 pol * nyquist * 2 bit * n stations
-        self.data_rate = 2 * 2*self.bandwidth*1e9 * 2 * self.stations / 1e12
+        self.data_rate = float(self.sig_fig(2 * 2*self.bandwidth*1e9 * 2 * self.stations / 1e12 * len(_frequency_list),3))
+
+        print("get_data_rate:",self.bandwidth,self.stations,_frequency_list,len(_frequency_list),self.data_rate,2 * 2*self.bandwidth*1e9 * 2 * self.stations / 1e12 * len(_frequency_list),float(self.sig_fig(2 * 2*self.bandwidth*1e9 * 2 * self.stations / 1e12 * len(_frequency_list),3)))
 
     def get_data_statistics(self) :
         
